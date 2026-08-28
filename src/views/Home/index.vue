@@ -19,7 +19,7 @@ import FooterComponent from './components/Layouts/FooterComponent.vue'
 
 <style lang="scss" scoped>
 .el-header {
-  padding: 0;
+  // padding: 0;
   background-color: #0b7ae1;
   height: 80px;
   display: flex;
@@ -28,7 +28,7 @@ import FooterComponent from './components/Layouts/FooterComponent.vue'
 }
 
 .el-main {
-  padding: 10px;
+  padding: 0px;
   background-color: #f5f5f5;
   min-height: calc(100vh - 80px - 60px);
 }
