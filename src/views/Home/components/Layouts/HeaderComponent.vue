@@ -7,13 +7,36 @@
         <div class="center">
             <el-menu router :default-active="activeIndex" class="el-menu-demo" mode="horizontal" :ellipsis="false">
                 <el-menu-item v-for="item in items" :key="item.index" :index="item.index">{{ item.label
-                    }}</el-menu-item>
+                }}</el-menu-item>
             </el-menu>
         </div>
         <div class="right">
             <el-button type="primary" size="small">登录</el-button>
             <el-button type="primary" size="small">注册</el-button>
         </div>
+        <button class="mobile-toggle" type="button" :aria-expanded="mobileMenuOpen" aria-label="打开导航菜单"
+            @click="mobileMenuOpen = !mobileMenuOpen">
+            <el-icon v-if="!mobileMenuOpen">
+                <Menu />
+            </el-icon>
+            <el-icon v-else>
+                <Close />
+            </el-icon>
+        </button>
+        <nav v-if="mobileMenuOpen" class="mobile-menu" aria-label="移动端导航">
+            <RouterLink v-for="item in items" :key="item.index" class="mobile-menu__item"
+                :class="{ 'is-active': activeIndex === item.index }" :to="{ name: item.index }"
+                @click="mobileMenuOpen = false">
+                <span>{{ item.label }}</span>
+                <el-icon>
+                    <ArrowRight />
+                </el-icon>
+            </RouterLink>
+            <div class="mobile-menu__account">
+                <el-button type="primary" size="small">登录</el-button>
+                <el-button type="primary" size="small">注册</el-button>
+            </div>
+        </nav>
     </div>
 </template>
 
@@ -22,6 +45,7 @@ import { ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 const route = useRoute()
 const activeIndex = ref(route.name)
+const mobileMenuOpen = ref(false)
 
 const items = [
     { index: 'index', label: '门户首页' },
@@ -30,19 +54,21 @@ const items = [
     { index: 'news', label: '新闻动态' }
 ]
 
-watch(route, (newRoute) => {
-    activeIndex.value = newRoute.name
+watch(() => route.name, (newRouteName) => {
+    activeIndex.value = newRouteName
+    mobileMenuOpen.value = false
 })
 </script>
 
 <style lang="scss" scoped>
 .header_wrap {
-    width: 100%;
+    position: relative;
+    width: min(1440px, calc(100% - 48px));
     color: #fff;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 100px;
+    gap: clamp(28px, 5vw, 100px);
 
     .left {
         position: relative;
@@ -108,14 +134,25 @@ watch(route, (newRoute) => {
     }
 
     .center {
-        // width: 600px;
+        flex: 1 1 auto;
+        min-width: 0;
+
         --el-menu-bg-color: transparent;
         --el-menu-text-color: #fff;
 
         .el-menu {
+            display: flex;
+            justify-content: center;
+            height: 80px;
             --el-menu-border-color: transparent;
             --el-menu-hover-bg-color: transparent;
             --el-menu-active-color: #fff;
+
+            .el-menu-item {
+                height: 80px;
+                padding: 0 20px;
+                line-height: 80px;
+            }
 
             .el-menu-item.is-active {
                 font-weight: bold;
@@ -124,8 +161,166 @@ watch(route, (newRoute) => {
     }
 
     .right {
-        width: 300px;
-        text-align: right;
+        display: flex;
+        flex: 0 0 auto;
+        gap: 8px;
+
+        .el-button+.el-button {
+            margin-left: 0;
+        }
+    }
+
+    .mobile-toggle,
+    .mobile-menu {
+        display: none;
+    }
+
+    @media (max-width: 1200px) {
+        width: calc(100% - 40px);
+        gap: 28px;
+
+        .center .el-menu .el-menu-item {
+            padding: 0 13px;
+            font-size: 13px;
+        }
+
+        .right .el-button {
+            padding-right: 12px;
+            padding-left: 12px;
+        }
+    }
+
+    @media (max-width: 960px) {
+        width: calc(100% - 32px);
+        gap: 18px;
+
+        .left {
+            .cn {
+                font-size: 18px;
+                letter-spacing: 1px;
+            }
+
+            .en {
+                max-width: 250px;
+                font-size: 9px;
+                letter-spacing: 0;
+            }
+        }
+
+        .center .el-menu .el-menu-item {
+            padding: 0 8px;
+            font-size: 12px;
+        }
+    }
+
+    @media (max-width: 760px) {
+        width: calc(100% - 32px);
+        min-height: 64px;
+
+        .left {
+            flex: 1 1 auto;
+            padding-left: 11px;
+
+            .cn {
+                font-size: 17px;
+            }
+
+            .en {
+                max-width: 100%;
+                margin-top: 5px;
+                font-size: 8px;
+                white-space: nowrap;
+                text-overflow: clip;
+            }
+        }
+
+        .center,
+        .right {
+            display: none;
+        }
+
+        .mobile-toggle {
+            display: inline-flex;
+            flex: 0 0 40px;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            padding: 0;
+            border: 1px solid rgba(255, 255, 255, 0.42);
+            border-radius: 3px;
+            color: #fff;
+            background-color: rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            transition: background-color 180ms ease, border-color 180ms ease;
+        }
+
+        .mobile-toggle:hover {
+            border-color: rgba(255, 255, 255, 0.76);
+            background-color: rgba(255, 255, 255, 0.18);
+        }
+
+        .mobile-menu {
+            position: absolute;
+            z-index: 20;
+            top: calc(100% + 10px);
+            right: 0;
+            left: 0;
+            display: flex;
+            flex-direction: column;
+            padding: 8px;
+            border: 1px solid rgba(14, 65, 111, 0.16);
+            border-radius: 4px;
+            background-color: #fff;
+            box-shadow: 0 14px 30px rgba(5, 38, 72, 0.2);
+        }
+
+        .mobile-menu__item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            min-height: 46px;
+            padding: 0 12px;
+            border-radius: 2px;
+            color: #1a3b5d;
+            font-size: 14px;
+            text-decoration: none;
+            transition: color 180ms ease, background-color 180ms ease;
+        }
+
+        .mobile-menu__item:hover,
+        .mobile-menu__item.is-active {
+            color: #0b7ae1;
+            background-color: #edf7ff;
+        }
+
+        .mobile-menu__account {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+            padding: 8px 4px 0;
+            border-top: 1px solid #e7eef4;
+        }
+
+        .mobile-menu__account .el-button {
+            flex: 1;
+            margin: 0;
+        }
+    }
+
+    @media (max-width: 380px) {
+        width: calc(100% - 24px);
+
+        .left {
+            .cn {
+                font-size: 16px;
+                letter-spacing: 0;
+            }
+
+            .en {
+                font-size: 7px;
+            }
+        }
     }
 }
 </style>
