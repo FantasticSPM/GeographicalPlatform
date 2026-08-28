@@ -6,10 +6,8 @@
         </div>
         <div class="center">
             <el-menu router :default-active="activeIndex" class="el-menu-demo" mode="horizontal" :ellipsis="false">
-                <el-menu-item index="index">门户首页</el-menu-item>
-                <el-menu-item index="geology">地质信息</el-menu-item>
-                <el-menu-item index="weather">天气信息</el-menu-item>
-                <el-menu-item index="news">新闻动态</el-menu-item>
+                <el-menu-item v-for="item in items" :key="item.index" :index="item.index">{{ item.label
+                    }}</el-menu-item>
             </el-menu>
         </div>
         <div class="right">
@@ -24,6 +22,14 @@ import { ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 const route = useRoute()
 const activeIndex = ref(route.name)
+
+const items = [
+    { index: 'index', label: '门户首页' },
+    { index: 'geology', label: '地质信息' },
+    { index: 'weather', label: '天气信息' },
+    { index: 'news', label: '新闻动态' }
+]
+
 watch(route, (newRoute) => {
     activeIndex.value = newRoute.name
 })
