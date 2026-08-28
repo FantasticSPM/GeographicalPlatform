@@ -23,10 +23,5 @@
   },
   "engines": {
     "node": "^22.18.0 || >=24.12.0"
-  },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "@parcel/watcher"
-    ]
   }
 }
