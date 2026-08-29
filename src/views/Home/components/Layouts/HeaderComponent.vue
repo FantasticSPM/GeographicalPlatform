@@ -63,7 +63,8 @@ watch(() => route.name, (newRouteName) => {
 <style lang="scss" scoped>
 .header_wrap {
     position: relative;
-    width: min(1440px, calc(100% - 48px));
+    // width: min(1440px, calc(100% - 48px));
+    width: 100%;
     color: #fff;
     display: flex;
     align-items: center;
@@ -99,7 +100,7 @@ watch(() => route.name, (newRouteName) => {
             letter-spacing: 4px;
             white-space: nowrap;
             text-overflow: ellipsis;
-            -webkit-text-stroke: 0.45px rgba(6, 56, 104, 0.38);
+            -webkit-text-stroke: 1px rgba(6, 56, 104, 0.38);
         }
 
         .en {
