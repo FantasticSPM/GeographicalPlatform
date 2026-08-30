@@ -45,19 +45,19 @@ import { ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 const route = useRoute()
 const router = useRouter()
-const activeIndex = ref(route.name)
+const activeIndex = ref(route.matched?.[1].path || route.path)
 const mobileMenuOpen = ref(false)
 
 const items = [
-    { index: 'index', label: '门户首页' },
-    { index: 'news', label: '新闻动态' },
-    { index: 'geology', label: '地质信息' },
-    { index: 'weather', label: '天气信息' },
-    { index: 'theme', label: '特色专题' }
+    { index: '/index', label: '门户首页' },
+    { index: '/geology', label: '地质信息' },
+    { index: '/weather', label: '天气信息' },
+    { index: '/theme', label: '特色专题' },
+    { index: '/help', label: '平台信息' }
 ]
 
-watch(() => route.name, (newRouteName) => {
-    activeIndex.value = newRouteName
+watch(() => route.path, (newRoutePath) => {
+    activeIndex.value = route.matched?.[1].path || newRoutePath
     mobileMenuOpen.value = false
 })
 

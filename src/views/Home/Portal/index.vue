@@ -9,12 +9,18 @@
                 </p>
                 <div class="hero__actions">
                     <RouterLink class="hero__action hero__action--primary" to="/geology">
-                        <el-icon><MapLocation /></el-icon>
+                        <el-icon>
+                            <MapLocation />
+                        </el-icon>
                         <span>浏览地质信息</span>
-                        <el-icon class="action-arrow"><ArrowRight /></el-icon>
+                        <el-icon class="action-arrow">
+                            <ArrowRight />
+                        </el-icon>
                     </RouterLink>
                     <RouterLink class="hero__action hero__action--ghost" to="/weather">
-                        <el-icon><Sunny /></el-icon>
+                        <el-icon>
+                            <Sunny />
+                        </el-icon>
                         <span>查看天气动态</span>
                     </RouterLink>
                 </div>
@@ -28,7 +34,9 @@
 
             <div class="hero__scroll">
                 <span>向下探索</span>
-                <el-icon><ArrowDown /></el-icon>
+                <el-icon>
+                    <ArrowDown />
+                </el-icon>
             </div>
         </section>
 
@@ -43,36 +51,48 @@
                 <RouterLink class="feature-card feature-card--blue" to="/geology">
                     <div class="feature-card__topline">
                         <span class="feature-card__index">01</span>
-                        <el-icon class="feature-card__icon"><MapLocation /></el-icon>
+                        <el-icon class="feature-card__icon">
+                            <MapLocation />
+                        </el-icon>
                     </div>
                     <div class="feature-card__body">
                         <h3>地质信息</h3>
                         <p>查看区域地质构造与资源信息，建立对土地的基础认知。</p>
-                        <span class="feature-card__link">进入专题 <el-icon><ArrowRight /></el-icon></span>
+                        <span class="feature-card__link">进入专题 <el-icon>
+                                <ArrowRight />
+                            </el-icon></span>
                     </div>
                 </RouterLink>
 
                 <RouterLink class="feature-card feature-card--teal" to="/weather">
                     <div class="feature-card__topline">
                         <span class="feature-card__index">02</span>
-                        <el-icon class="feature-card__icon"><Sunny /></el-icon>
+                        <el-icon class="feature-card__icon">
+                            <Sunny />
+                        </el-icon>
                     </div>
                     <div class="feature-card__body">
                         <h3>天气信息</h3>
                         <p>掌握实时天气变化，为出行、生产与环境观察提供参考。</p>
-                        <span class="feature-card__link">进入专题 <el-icon><ArrowRight /></el-icon></span>
+                        <span class="feature-card__link">进入专题 <el-icon>
+                                <ArrowRight />
+                            </el-icon></span>
                     </div>
                 </RouterLink>
 
-                <RouterLink class="feature-card feature-card--amber" to="/news">
+                <RouterLink class="feature-card feature-card--amber" to="/help">
                     <div class="feature-card__topline">
                         <span class="feature-card__index">03</span>
-                        <el-icon class="feature-card__icon"><TrendCharts /></el-icon>
+                        <el-icon class="feature-card__icon">
+                            <TrendCharts />
+                        </el-icon>
                     </div>
                     <div class="feature-card__body">
                         <h3>新闻动态</h3>
                         <p>跟进区域热点与行业动态，让空间变化与现实事件彼此连接。</p>
-                        <span class="feature-card__link">进入专题 <el-icon><ArrowRight /></el-icon></span>
+                        <span class="feature-card__link">进入专题 <el-icon>
+                                <ArrowRight />
+                            </el-icon></span>
                     </div>
                 </RouterLink>
             </div>
@@ -298,7 +318,7 @@
     line-height: 1.25;
 }
 
-.section-heading > p:last-child {
+.section-heading>p:last-child {
     margin: 0;
     color: var(--muted);
     font-size: 14px;
@@ -455,13 +475,14 @@
     font-size: 16px;
 }
 
-.metric > span {
+.metric>span {
     margin-top: 9px;
     color: rgba(255, 255, 255, 0.64);
     font-size: 12px;
 }
 
 @keyframes scroll-hint {
+
     0%,
     100% {
         transform: translateY(0);

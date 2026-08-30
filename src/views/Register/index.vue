@@ -121,7 +121,7 @@
                     <el-form-item class="agreement-item" prop="agreement">
                         <el-checkbox v-model="form.agreement">
                             <span>我已阅读并同意</span>
-                            <a href="">《平台服务协议与隐私政策》</a>
+                            <a href="/help/service">《平台服务协议与隐私政策》</a>
                         </el-checkbox>
                     </el-form-item>
 

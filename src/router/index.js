@@ -31,9 +31,22 @@ const router = createRouter({
           component: () => import('@/views/Home/Theme/index.vue')
         },
         {
-          path: 'news',
-          name: 'news',
-          component: () => import('@/views/Home/News/index.vue')
+          path: 'help',
+          name: 'help',
+          component: () => import('@/views/Home/Help/index.vue'),
+          redirect: '/help/news',
+          children: [
+            {
+              path: 'news',
+              name: 'news',
+              component: () => import('@/views/Home/Help/News/index.vue')
+            },
+            {
+              path: 'service',
+              name: 'service',
+              component: () => import('@/views/Home/Help/Service/index.vue')
+            }
+          ]
         }
       ]
     },
