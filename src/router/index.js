@@ -26,11 +26,26 @@ const router = createRouter({
           component: () => import('@/views/Home/Weather/index.vue')
         },
         {
+          path: "theme",
+          name: "theme",
+          component: () => import('@/views/Home/Theme/index.vue')
+        },
+        {
           path: 'news',
           name: 'news',
           component: () => import('@/views/Home/News/index.vue')
         }
       ]
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: () => import('@/views/Login/index.vue')
+    },
+    {
+      path: '/register',
+      name: 'register',
+      component: () => import('@/views/Register/index.vue')
     }
   ],
 })

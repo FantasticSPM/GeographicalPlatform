@@ -7,12 +7,12 @@
         <div class="center">
             <el-menu router :default-active="activeIndex" class="el-menu-demo" mode="horizontal" :ellipsis="false">
                 <el-menu-item v-for="item in items" :key="item.index" :index="item.index">{{ item.label
-                }}</el-menu-item>
+                    }}</el-menu-item>
             </el-menu>
         </div>
         <div class="right">
-            <el-button type="primary" size="small">登录</el-button>
-            <el-button type="primary" size="small">注册</el-button>
+            <el-button type="primary" size="small" @click="login">登录</el-button>
+            <el-button type="primary" size="small" @click="register">注册</el-button>
         </div>
         <button class="mobile-toggle" type="button" :aria-expanded="mobileMenuOpen" aria-label="打开导航菜单"
             @click="mobileMenuOpen = !mobileMenuOpen">
@@ -33,8 +33,8 @@
                 </el-icon>
             </RouterLink>
             <div class="mobile-menu__account">
-                <el-button type="primary" size="small">登录</el-button>
-                <el-button type="primary" size="small">注册</el-button>
+                <el-button type="primary" size="small" @click="login">登录</el-button>
+                <el-button type="primary" size="small" @click="register">注册</el-button>
             </div>
         </nav>
     </div>
@@ -42,22 +42,42 @@
 
 <script setup>
 import { ref, watch } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 const route = useRoute()
+const router = useRouter()
 const activeIndex = ref(route.name)
 const mobileMenuOpen = ref(false)
 
 const items = [
     { index: 'index', label: '门户首页' },
+    { index: 'news', label: '新闻动态' },
     { index: 'geology', label: '地质信息' },
     { index: 'weather', label: '天气信息' },
-    { index: 'news', label: '新闻动态' }
+    { index: 'theme', label: '特色专题' }
 ]
 
 watch(() => route.name, (newRouteName) => {
     activeIndex.value = newRouteName
     mobileMenuOpen.value = false
 })
+
+function login() {
+    router.push({
+        name: 'login',
+        query: {
+            url: window.location.href
+        }
+    })
+}
+
+function register() {
+    router.push({
+        name: 'register',
+        query: {
+            url: window.location.href
+        }
+    })
+}
 </script>
 
 <style lang="scss" scoped>
@@ -70,6 +90,20 @@ watch(() => route.name, (newRouteName) => {
     align-items: center;
     justify-content: space-between;
     gap: clamp(28px, 5vw, 100px);
+
+    .brand__mark {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 50px;
+        height: 50px;
+        border: 1px solid rgba(139, 212, 255, 0.88);
+        border-radius: 50%;
+        color: #dff6ff;
+        font-size: 19px;
+        font-weight: 700;
+        line-height: 1;
+    }
 
     .left {
         position: relative;
@@ -135,6 +169,10 @@ watch(() => route.name, (newRouteName) => {
     }
 
     .center {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
         flex: 1 1 auto;
         min-width: 0;
 
