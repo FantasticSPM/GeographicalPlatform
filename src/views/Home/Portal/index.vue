@@ -5,14 +5,14 @@
                 <p class="eyebrow">GEOGRAPHICAL SPATIAL RESOURCE INFORMATION PLATFORM</p>
                 <h1>让每一寸土地<br /><span>都看得见、读得懂</span></h1>
                 <p class="hero__description">
-                    汇聚地质、天气与新闻等空间信息，以更清晰的视角感知环境变化，为区域研判与公共服务提供可靠依据。
+                    汇聚空间、天气、专题与平台资讯，以更清晰的视角感知环境变化，为区域研判与公共服务提供可靠依据。
                 </p>
                 <div class="hero__actions">
                     <RouterLink class="hero__action hero__action--primary" to="/geology">
                         <el-icon>
                             <MapLocation />
                         </el-icon>
-                        <span>浏览地质信息</span>
+                        <span>浏览空间信息</span>
                         <el-icon class="action-arrow">
                             <ArrowRight />
                         </el-icon>
@@ -56,8 +56,8 @@
                         </el-icon>
                     </div>
                     <div class="feature-card__body">
-                        <h3>地质信息</h3>
-                        <p>查看区域地质构造与资源信息，建立对土地的基础认知。</p>
+                        <h3>空间信息</h3>
+                        <p>在地图中浏览空间信息，建立对区域环境与地理资源的整体认知。</p>
                         <span class="feature-card__link">进入专题 <el-icon>
                                 <ArrowRight />
                             </el-icon></span>
@@ -80,7 +80,7 @@
                     </div>
                 </RouterLink>
 
-                <RouterLink class="feature-card feature-card--amber" to="/help">
+                <RouterLink class="feature-card feature-card--amber" to="/theme">
                     <div class="feature-card__topline">
                         <span class="feature-card__index">03</span>
                         <el-icon class="feature-card__icon">
@@ -88,8 +88,24 @@
                         </el-icon>
                     </div>
                     <div class="feature-card__body">
-                        <h3>新闻动态</h3>
-                        <p>跟进区域热点与行业动态，让空间变化与现实事件彼此连接。</p>
+                        <h3>特色专题</h3>
+                        <p>汇集实景三维、交通枢纽与可视化平台，发现更多空间应用场景。</p>
+                        <span class="feature-card__link">进入专题 <el-icon>
+                                <ArrowRight />
+                            </el-icon></span>
+                    </div>
+                </RouterLink>
+
+                <RouterLink class="feature-card feature-card--green" to="/help">
+                    <div class="feature-card__topline">
+                        <span class="feature-card__index">04</span>
+                        <el-icon class="feature-card__icon">
+                            <Postcard />
+                        </el-icon>
+                    </div>
+                    <div class="feature-card__body">
+                        <h3>平台信息</h3>
+                        <p>查看新闻公告与服务条款，及时了解平台动态和服务边界。</p>
                         <span class="feature-card__link">进入专题 <el-icon>
                                 <ArrowRight />
                             </el-icon></span>
@@ -105,8 +121,8 @@
             </div>
             <div class="metrics-grid">
                 <div class="metric">
-                    <strong>03</strong>
-                    <span>核心专题</span>
+                    <strong>04</strong>
+                    <span>核心模块</span>
                 </div>
                 <div class="metric">
                     <strong>24<span>H</span></strong>
@@ -115,6 +131,10 @@
                 <div class="metric">
                     <strong>01</strong>
                     <span>统一空间入口</span>
+                </div>
+                <div class="metric">
+                    <strong>01</strong>
+                    <span>平台资讯中心</span>
                 </div>
             </div>
         </section>
@@ -327,7 +347,7 @@
 
 .feature-grid {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 16px;
     margin-top: 34px;
 }
@@ -375,6 +395,10 @@
 
 .feature-card--amber {
     --card-accent: var(--amber);
+}
+
+.feature-card--green {
+    --card-accent: #46a878;
 }
 
 .feature-card__topline {
@@ -449,7 +473,7 @@
 
 .metrics-grid {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
 .metric {
@@ -517,6 +541,13 @@
     .metrics-section {
         grid-template-columns: 1fr;
         gap: 28px;
+    }
+
+}
+
+@media (max-width: 1100px) and (min-width: 901px) {
+    .feature-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 }
 

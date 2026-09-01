@@ -22,7 +22,7 @@
                 <p class="intro__kicker">BUILD YOUR SPATIAL VIEW</p>
                 <h1>创建账号，<br /><span>探索无界空间。</span></h1>
                 <p class="intro__description">
-                    注册平台，收藏感兴趣的地质、天气与专题内容，让重要的空间信息始终触手可及。
+                    注册平台，探索空间信息、天气动态与特色专题，及时获取平台资讯，让重要的内容始终触手可及。
                 </p>
 
                 <div class="intro__features">
@@ -34,7 +34,7 @@
                         </span>
                         <span>
                             <strong>发现空间</strong>
-                            <small>从地图开始探索</small>
+                            <small>从空间信息开始探索</small>
                         </span>
                     </div>
                     <div class="intro__feature">
@@ -44,8 +44,8 @@
                             </el-icon>
                         </span>
                         <span>
-                            <strong>沉淀数据</strong>
-                            <small>保存你的关注内容</small>
+                            <strong>关注专题</strong>
+                            <small>发现更多应用场景</small>
                         </span>
                     </div>
                     <div class="intro__feature">
@@ -55,8 +55,8 @@
                             </el-icon>
                         </span>
                         <span>
-                            <strong>随时访问</strong>
-                            <small>多设备无缝衔接</small>
+                            <strong>平台动态</strong>
+                            <small>及时了解服务更新</small>
                         </span>
                     </div>
                 </div>

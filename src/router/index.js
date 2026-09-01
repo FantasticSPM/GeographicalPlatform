@@ -18,7 +18,20 @@ const router = createRouter({
         {
           path: 'geology',
           name: 'geology',
-          component: () => import('@/views/Home/Geology/index.vue')
+          redirect: '/geology/catalog',
+          component: () => import('@/views/Home/Geology/index.vue'),
+          children: [
+            {
+              path: 'catalog',
+              name: 'catalog',
+              component: () => import('@/views/Home/Geology/Catalog/index.vue')
+            },
+            {
+              path: 'upload',
+              name: 'upload',
+              component: () => import('@/views/Home/Geology/Upload/index.vue')
+            }
+          ]
         },
         {
           path: 'weather',

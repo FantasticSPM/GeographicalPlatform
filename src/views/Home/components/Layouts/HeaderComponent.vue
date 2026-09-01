@@ -50,7 +50,7 @@ const mobileMenuOpen = ref(false)
 
 const items = [
     { index: '/index', label: '门户首页' },
-    { index: '/geology', label: '地质信息' },
+    { index: '/geology', label: '空间信息' },
     { index: '/weather', label: '天气信息' },
     { index: '/theme', label: '特色专题' },
     { index: '/help', label: '平台信息' }

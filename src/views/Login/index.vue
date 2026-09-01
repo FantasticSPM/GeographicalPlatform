@@ -22,7 +22,7 @@
                 <p class="intro__kicker">SPATIAL RESOURCE · INFORMATION SERVICE</p>
                 <h1>连接地图，<br /><span>看见更大的世界。</span></h1>
                 <p class="intro__description">
-                    登录平台，继续探索地质、天气与特色专题，让每一份空间信息都清晰可见。
+                    登录平台，继续探索空间信息、天气动态与特色专题，及时了解平台资讯，让每一份空间信息都清晰可见。
                 </p>
 
                 <div class="intro__features">
@@ -40,8 +40,8 @@
                                 <DataAnalysis />
                             </el-icon></span>
                         <span>
-                            <strong>数据洞察</strong>
-                            <small>让信息更有价值</small>
+                            <strong>天气信息</strong>
+                            <small>感知环境变化</small>
                         </span>
                     </div>
                     <div class="intro__feature">
@@ -49,8 +49,8 @@
                                 <Monitor />
                             </el-icon></span>
                         <span>
-                            <strong>统一入口</strong>
-                            <small>随时随地访问</small>
+                            <strong>特色专题</strong>
+                            <small>探索更多应用场景</small>
                         </span>
                     </div>
                 </div>
@@ -63,7 +63,7 @@
                 <div class="login-panel__heading">
                     <p class="panel-kicker">WELCOME BACK</p>
                     <h2>欢迎回来</h2>
-                    <p>登录后继续使用平台服务</p>
+                    <p>登录后继续使用平台的各项信息服务</p>
                 </div>
 
                 <el-form ref="formRef" class="login-form" :model="form" :rules="rules" label-position="top"
