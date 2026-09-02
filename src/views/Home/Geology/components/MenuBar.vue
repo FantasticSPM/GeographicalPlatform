@@ -51,6 +51,7 @@ const items = [
         &.is-active {
             font-weight: 600;
             background-color: #0b7ae1;
+            border-radius: 10px;
         }
 
         >span {

@@ -2,7 +2,7 @@
     <div class="panel">
         <div class="panel-heading">
             <slot name="header">
-                {{ title }}
+                <h2>{{ title }}</h2>
             </slot>
         </div>
 
@@ -52,6 +52,13 @@ defineProps({
     display: flex;
     align-items: center;
     justify-content: space-between;
+}
+
+.panel-heading h2 {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.3;
 }
 
 .panel-divider {

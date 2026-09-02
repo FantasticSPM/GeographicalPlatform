@@ -5,6 +5,7 @@
         </div>
         <div class="geology-body">
             <MapContainer></MapContainer>
+            <MapBar class="map-bar-tool"></MapBar>
             <div class="geology-content">
                 <RouterView></RouterView>
             </div>
@@ -15,6 +16,7 @@
 <script setup>
 import MenuBar from './components/MenuBar.vue';
 import MapContainer from '@/components/map/MapContainer.vue';
+import MapBar from '@/components/map/MapBar/MapBar.vue';
 </script>
 
 <style lang="scss" scoped>
@@ -30,6 +32,15 @@ import MapContainer from '@/components/map/MapContainer.vue';
     .geology-body {
         width: 100%;
         position: relative;
+        overflow: hidden;
+
+        .map-bar-tool {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 999;
+            pointer-events: auto;
+        }
 
         .geology-content {
             position: absolute;

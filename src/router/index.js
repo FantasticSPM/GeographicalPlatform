@@ -8,7 +8,9 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: HomeView,
-      redirect: '/index',
+      redirect: {
+        name: 'index'
+      },
       children: [
         {
           path: 'index',
@@ -18,7 +20,9 @@ const router = createRouter({
         {
           path: 'geology',
           name: 'geology',
-          redirect: '/geology/catalog',
+          redirect: {
+            name: 'catalog'
+          },
           component: () => import('@/views/Home/Geology/index.vue'),
           children: [
             {

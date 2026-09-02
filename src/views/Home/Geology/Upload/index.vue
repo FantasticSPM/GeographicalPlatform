@@ -266,6 +266,7 @@ function judgeGeojsonType(data) {
 
 // 移除数据
 function removeData(name) {
+    if (!window.map) return
     if (!hasDataName(name)) return
     window.map.removeLayer(name)
     window.map.removeSource(name)
@@ -310,13 +311,6 @@ onBeforeUnmount(() => {
     font-weight: 700;
     letter-spacing: 1.5px;
     line-height: 1.2;
-}
-
-.panel-heading h2 {
-    margin: 0;
-    font-size: 22px;
-    font-weight: 700;
-    line-height: 1.3;
 }
 
 .heading-icon {

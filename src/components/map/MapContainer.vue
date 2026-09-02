@@ -40,7 +40,7 @@ function initMap() {
     //   type: "globe",
     // });
     window.map = map;
-
+    map.addControl(new maplibregl.NavigationControl(), "bottom-right");
     // // 添加全屏按钮
     // map.addControl(new maplibregl.FullscreenControl(), "top-left");
 
