@@ -95,8 +95,9 @@ function handleClose() {
     overflow: hidden;
 
     .el-menu-item {
-        line-height: 2.5;
+        line-height: 1;
         border: none;
+        padding: 8px;
         --el-menu-active-color: #fff;
 
         &.is-active {

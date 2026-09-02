@@ -40,7 +40,7 @@ function initMap() {
     //   type: "globe",
     // });
     window.map = map;
-    map.addControl(new maplibregl.NavigationControl(), "bottom-right");
+    // map.addControl(new maplibregl.NavigationControl(), "bottom-right");
     // // 添加全屏按钮
     // map.addControl(new maplibregl.FullscreenControl(), "top-left");
 
@@ -48,25 +48,26 @@ function initMap() {
 
     function mapload() {
         // 卫星底图
-        map.addSource("base-map", {
-            type: "raster",
-            tiles: [
-                "https://webst01.is.autonavi.com/appmaptile?style=6&x={x}&y={y}&z={z}",
-            ],
-            tileSize: 256,
-            maxzoom: 18,
-        });
+        // map.addSource("base-map", {
+        //     type: "raster",
+        //     tiles: [
+        //         // "https://webst01.is.autonavi.com/appmaptile?style=6&x={x}&y={y}&z={z}",
+        //         "https://webrd04.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=7&x={x}&y={y}&z={z}"
+        //     ],
+        //     tileSize: 256,
+        //     maxzoom: 18,
+        // });
 
-        map.addLayer({
-            id: "base-map",
-            type: "raster",
-            source: "base-map",
-            paint: {
-                // "raster-contrast": 0.2,
-                // "raster-brightness-min": 0.3,
-                "raster-saturation": 0,
-            },
-        });
+        // map.addLayer({
+        //     id: "base-map",
+        //     type: "raster",
+        //     source: "base-map",
+        //     paint: {
+        //         // "raster-contrast": 0.2,
+        //         // "raster-brightness-min": 0.3,
+        //         "raster-saturation": 0,
+        //     },
+        // });
     }
 }
 

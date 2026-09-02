@@ -125,10 +125,10 @@ const uploadList = ref([])
 const styleMap = {
     'Polygon': {
         color: '#008888',
-        opacity: 0.5
+        opacity: 0.5,
     },
     'LineString': {
-        color: '#d50000',
+        color: '#0b7ae1',
         width: 1
     },
     'Point': {
@@ -190,7 +190,6 @@ function handleUpload() {
     } else {
         ElMessage.warning('不支持的文件类型')
     }
-    console.log(selectedFile.value)
 }
 
 // 加载geojson数据
@@ -213,6 +212,16 @@ function handleGeojson(data, name = 'uploaded-geojson') {
                 'fill-color': style?.color,
                 'fill-opacity': style?.opacity
             }
+        })
+        window.map.addLayer({
+            id: name + '_other',
+            type: 'line',
+            source: name,
+            layout: {},
+            paint: {
+                "line-color": styleMap.LineString.color,
+                "line-width": styleMap.LineString.width,
+            },
         })
     } else if (geometryType === 'LineString' || geometryType === 'MultiLineString') {
         style = styleMap.LineString
@@ -239,8 +248,7 @@ function handleGeojson(data, name = 'uploaded-geojson') {
         })
     }
 
-    window.map.fitBounds(turf.bbox(data), { padding: 20 })
-
+    locateData(name)
     return {
         name,
         geometryType,
@@ -269,6 +277,7 @@ function removeData(name) {
     if (!window.map) return
     if (!hasDataName(name)) return
     window.map.removeLayer(name)
+    window.map.getLayer(name + '_other') && window.map.removeLayer(name + '_other')
     window.map.removeSource(name)
     uploadList.value = uploadList.value.filter(item => item.name !== name)
 }
