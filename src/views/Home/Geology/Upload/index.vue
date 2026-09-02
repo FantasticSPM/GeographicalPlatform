@@ -68,21 +68,21 @@
             </div>
             <div class="file-list">
                 <div v-for="file in uploadList" :key="file.name" class="file-item">
-                    <span class="file-icon">
+                    <el-icon class="file-icon" :color="file.color">
                         <template v-if="file.geometryType === 'Polygon' || file.geometryType === 'MultiPolygon'">
-                            <Polygon :color="file.color" />
+                            <Polygon />
                         </template>
                         <template
                             v-else-if="file.geometryType === 'LineString' || file.geometryType === 'MultiLineString'">
-                            <Line :color="file.color" />
+                            <Line />
                         </template>
                         <template v-else-if="file.geometryType === 'Point' || file.geometryType === 'MultiPoint'">
-                            <Point :color="file.color" />
+                            <Point />
                         </template>
                         <template v-else>
                             <Document />
                         </template>
-                    </span>
+                    </el-icon>
                     <span class="file-details">
                         <strong :title="file.name">{{ file.name }}</strong>
                     </span>
@@ -90,7 +90,7 @@
                         <SuccessFilled />
                     </el-icon>
                     <div class="edit-buttons">
-                        <el-color-picker v-model="file.color" @change="(e) => changeColor(file, e)" />
+                        <el-color-picker size="small" v-model="file.color" @change="(e) => changeColor(file, e)" />
                         <el-icon @click="locateData(file.name)" title="定位">
                             <Position />
                         </el-icon>
@@ -482,7 +482,6 @@ section {
     height: 30px;
     flex: none;
     border-radius: 4px;
-    color: var(--blue);
     background-color: #eaf5ff;
 }
 
