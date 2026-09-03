@@ -25,8 +25,7 @@
         </button>
         <nav v-if="mobileMenuOpen" class="mobile-menu" aria-label="移动端导航">
             <RouterLink v-for="item in items" :key="item.index" class="mobile-menu__item"
-                :class="{ 'is-active': activeIndex === item.index }" :to="{ name: item.index }"
-                @click="mobileMenuOpen = false">
+                :class="{ 'is-active': activeIndex === item.index }" :to="item.index" @click="mobileMenuOpen = false">
                 <span>{{ item.label }}</span>
                 <el-icon>
                     <ArrowRight />
@@ -301,7 +300,7 @@ function register() {
 
         .mobile-menu {
             position: absolute;
-            z-index: 20;
+            z-index: 9999;
             top: calc(100% + 10px);
             right: 0;
             left: 0;
