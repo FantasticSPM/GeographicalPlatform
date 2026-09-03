@@ -4,7 +4,13 @@
             <img :src="currentBaseMap.image" alt="">
         </div>
         <div class="base-map-list">
-            <div v-for="i in baseMapList" class="base-map-item" @click="changeBaseMap(i)" :title="i.name">
+              <div
+                  v-for="i in baseMapList"
+                  class="base-map-item"
+                  :class="{ 'is-current': i.id === currentBaseMap.id }"
+                  @click="changeBaseMap(i)"
+                  :title="i.name"
+              >
                 <img :src="i.image" alt="">
                 <span class="base-map-item-name" :title="i.name">{{ i.name }}</span>
             </div>
@@ -113,11 +119,14 @@ onBeforeUnmount(() => {
 <style lang="scss" scoped>
 .base-map-control {
     position: relative;
+    width: 72px;
+    height: 72px;
 
     &:hover .base-map-list {
         visibility: visible;
         opacity: 1;
         pointer-events: auto;
+        transform: translateX(0);
     }
 
     &::before {
@@ -130,9 +139,59 @@ onBeforeUnmount(() => {
     }
 
     .current-base-map {
+        position: relative;
+        width: 72px;
+        height: 72px;
+        overflow: hidden;
+        border: 2px solid #fff;
+        border-radius: 8px;
+        background-color: #dce9ef;
+        box-shadow: 0 3px 10px rgba(16, 47, 73, 0.2), 0 1px 2px rgba(16, 47, 73, 0.12);
+        cursor: pointer;
+        transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+
+        &::before {
+            position: absolute;
+            z-index: 1;
+            right: 0;
+            bottom: 7px;
+            left: 0;
+            overflow: hidden;
+            padding: 0 5px;
+            color: #fff;
+            content: attr(title);
+            font-size: 11px;
+            font-weight: 600;
+            line-height: 1.3;
+            text-align: center;
+            text-overflow: ellipsis;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+            white-space: nowrap;
+        }
+
+        &::after {
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            height: 28px;
+            background: linear-gradient(180deg, transparent, rgba(8, 31, 49, 0.64));
+            content: '';
+            pointer-events: none;
+        }
+
+        &:hover {
+            border-color: #eaf7ff;
+            box-shadow: 0 6px 14px rgba(16, 47, 73, 0.26), 0 2px 4px rgba(16, 47, 73, 0.14);
+            transform: translateY(-2px);
+        }
+
         >img {
-            width: 68px;
-            height: 68px;
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 220ms ease;
         }
     }
 
@@ -142,33 +201,109 @@ onBeforeUnmount(() => {
         bottom: 0;
         display: flex;
         align-items: center;
-        gap: 8px;
-        padding: 8px 12px;
-        background: #fff;
-        border-radius: 12px;
-        box-shadow: 0 4px 16px rgba(0, 0, 0, .12);
+        gap: 6px;
+        min-height: 94px;
+        padding: 8px;
+        border: 1px solid #d9e7ee;
+        border-radius: 10px;
+        background-color: #fff;
+        box-shadow: 0 8px 20px rgba(24, 59, 91, 0.16), 0 2px 5px rgba(24, 59, 91, 0.08);
         opacity: 0;
         visibility: hidden;
         pointer-events: none;
         white-space: nowrap;
-        transition: opacity .2s ease, visibility .2s;
+        transition: opacity 180ms ease, visibility 180ms ease, transform 180ms ease;
+        transform: translateX(4px);
+
+        &:hover {
+            visibility: visible;
+            opacity: 1;
+            pointer-events: auto;
+        }
     }
 
     .base-map-item {
+        position: relative;
+        width: 64px;
+        flex: none;
+        padding: 4px 3px 5px;
+        border: 1px solid transparent;
+        border-radius: 7px;
+        color: #4d6878;
         cursor: pointer;
-        width: 60px;
+        transition: color 180ms ease, border-color 180ms ease, background-color 180ms ease, transform 180ms ease;
 
-        >img {
+          &:hover {
+              border-color: #b8dcef;
+              color: #0b7ae1;
+              background-color: #f3f9fc;
+              transform: translateY(-2px);
+          }
+
+          &.is-current {
+              border-color: #0b7ae1;
+              color: #0b7ae1;
+              background-color: #eef8ff;
+              box-shadow: 0 0 0 2px rgba(11, 122, 225, 0.12);
+
+              &::after {
+                  position: absolute;
+                  top: 7px;
+                  right: 6px;
+                  width: 7px;
+                  height: 7px;
+                  border: 2px solid #fff;
+                  border-radius: 50%;
+                  background-color: #0b7ae1;
+                  box-shadow: 0 0 0 1px rgba(11, 122, 225, 0.25);
+                  content: '';
+              }
+
+              >img {
+                  border-color: #0b7ae1;
+                  box-shadow: 0 0 0 2px rgba(11, 122, 225, 0.16);
+              }
+          }
+
+          >img {
+            display: block;
             width: 100%;
+            height: 54px;
             aspect-ratio: 1;
+            border: 1px solid #d8e6ec;
+            border-radius: 5px;
+            object-fit: cover;
+            box-shadow: 0 1px 4px rgba(24, 59, 91, 0.1);
         }
 
         .base-map-item-name {
             display: block;
-            font-size: 12px;
-            text-align: center;
+            margin-top: 5px;
             overflow: hidden;
+            font-size: 11px;
+            font-weight: 600;
+            line-height: 1.3;
+            text-align: center;
             text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+    }
+}
+
+@media (max-width: 520px) {
+    .base-map-control {
+        .base-map-list {
+            right: 0;
+            bottom: calc(100% + 8px);
+            max-width: calc(100vw - 20px);
+            overflow-x: auto;
+            scrollbar-width: thin;
+            transform: translateY(4px);
+        }
+
+        &:hover .base-map-list,
+        .base-map-list:hover {
+            transform: translateY(0);
         }
     }
 }
