@@ -6,11 +6,9 @@
                 <h2>数据上传</h2>
             </div>
             <span class="heading-icon">
-                <slot name="icon">
-                    <el-icon>
-                        <UploadFilled />
-                    </el-icon>
-                </slot>
+                <el-icon>
+                    <UploadFilled />
+                </el-icon>
             </span>
         </template>
         <section class="upload-section">
@@ -68,20 +66,11 @@
             </div>
             <div class="file-list">
                 <div v-for="file in uploadList" :key="file.name" class="file-item">
-                    <el-icon class="file-icon" :color="file.color">
-                        <template v-if="file.geometryType === 'Polygon' || file.geometryType === 'MultiPolygon'">
-                            <Polygon />
+                    <el-icon class="file-icon" :color="file.info.color">
+                        <template v-if="styleMap[file.type]">
+                            <component :is="styleMap[file.type].icon"></component>
                         </template>
-                        <template
-                            v-else-if="file.geometryType === 'LineString' || file.geometryType === 'MultiLineString'">
-                            <Line />
-                        </template>
-                        <template v-else-if="file.geometryType === 'Point' || file.geometryType === 'MultiPoint'">
-                            <Point />
-                        </template>
-                        <template v-else>
-                            <Document />
-                        </template>
+                        <Document v-else />
                     </el-icon>
                     <span class="file-details">
                         <strong :title="file.name">{{ file.name }}</strong>
@@ -90,11 +79,11 @@
                         <SuccessFilled />
                     </el-icon>
                     <div class="edit-buttons">
-                        <el-color-picker size="small" v-model="file.color" @change="(e) => changeColor(file, e)" />
-                        <el-icon @click="locateData(file.name)" title="定位">
+                        <el-color-picker size="small" v-model="file.info.color" @change="(e) => change(file.id, e)" />
+                        <el-icon @click="locate(file.id)" title="定位">
                             <Position />
                         </el-icon>
-                        <el-icon @click="removeData(file.name)" title="移除">
+                        <el-icon @click="remove(file.id)" title="移除">
                             <Delete />
                         </el-icon>
                     </div>
@@ -112,28 +101,36 @@
 
 <script setup>
 import Panel from '@/components/panel/Panel.vue'
-import { onBeforeUnmount, ref } from 'vue'
+import { ref, computed } from 'vue'
 import { ElMessage } from 'element-plus'
-import * as turf from '@turf/turf'
 import Point from '@/components/Icon/Point.vue'
 import Line from '@/components/Icon/Line.vue'
 import Polygon from '@/components/Icon/Polygon.vue'
+import { hasData, handleGeojson, removeData, locateData, changeColor } from '@/utils/map'
+
+import { useSourceStore } from '@/stores/source'
+const sourceStore = useSourceStore()
 
 const selectedFile = ref(null)
-const uploadList = ref([])
+const uploadList = computed(() => {
+    return sourceStore.source.find(i => i.id === 'upload')?.children || []
+})
 
 const styleMap = {
-    'Polygon': {
+    'polygon': {
         color: '#008888',
         opacity: 0.5,
+        icon: Polygon
     },
-    'LineString': {
+    'line': {
         color: '#0b7ae1',
-        width: 1
+        width: 1,
+        icon: Line
     },
-    'Point': {
+    'point': {
         radius: 6,
-        color: '#007acc'
+        color: '#007acc',
+        icon: Point
     }
 }
 
@@ -172,18 +169,25 @@ function handleUpload() {
         reader.onload = (event) => {
             const data = JSON.parse(event.target.result)
             let name = selectedFile.value.name.split('.').slice(0, -1).join('.')
-            if (hasDataName(name)) {
+            if (hasData(window.map, name)) {
                 name = `${name}-${uploadList.value.length}`
             }
 
-            const result = handleGeojson(data, name)
-            uploadList.value.push({
-                name: result.name,
-                size: selectedFile.value.size,
-                fileType: selectedFile.value.type,
-                geometryType: result.geometryType,
-                color: result.color
-            })
+            const result = handleGeojson(window.map, data, name, styleMap)
+
+            const info = {
+                id: name,
+                name: name,
+                type: result.geometryType,
+                info: {
+                    size: selectedFile.value.size,
+                    fileType: selectedFile.value.type,
+                    color: result.color,
+                    data,
+                }
+            }
+
+            sourceStore.addSource('upload', info)
             clearFile()
         }
         reader.readAsText(selectedFile.value)
@@ -192,124 +196,20 @@ function handleUpload() {
     }
 }
 
-// 加载geojson数据
-function handleGeojson(data, name = 'uploaded-geojson') {
-    const geometryType = judgeGeojsonType(data)
-    let style
-    window.map.addSource(name, {
-        type: 'geojson',
-        data: data
-    })
 
-    if (geometryType === 'Polygon' || geometryType === 'MultiPolygon') {
-        style = styleMap.Polygon
-        window.map.addLayer({
-            id: name,
-            type: 'fill',
-            source: name,
-            layout: {},
-            paint: {
-                'fill-color': style?.color,
-                'fill-opacity': style?.opacity
-            }
-        })
-        window.map.addLayer({
-            id: name + '_other',
-            type: 'line',
-            source: name,
-            layout: {},
-            paint: {
-                "line-color": styleMap.LineString.color,
-                "line-width": styleMap.LineString.width,
-            },
-        })
-    } else if (geometryType === 'LineString' || geometryType === 'MultiLineString') {
-        style = styleMap.LineString
-        window.map.addLayer({
-            id: name,
-            type: 'line',
-            source: name,
-            layout: {},
-            paint: {
-                "line-color": style?.color,
-                "line-width": style?.width,
-            },
-        })
-    } else if (geometryType === 'Point' || geometryType === 'MultiPoint') {
-        style = styleMap.Point
-        window.map.addLayer({
-            id: name,
-            type: 'circle',
-            source: name,
-            paint: {
-                'circle-radius': style?.radius,
-                'circle-color': style?.color
-            }
-        })
-    }
-
-    locateData(name)
-    return {
-        name,
-        geometryType,
-        color: style?.color
-    }
+function locate(id) {
+    locateData(window.map, id)
 }
 
-// 判读数据是否加载
-function hasDataName(name) {
-    return window.map.getSource(name) !== undefined
+function remove(id) {
+    removeData(window.map, id)
+    sourceStore.removeSource('upload', id)
 }
 
-// 判断数据类型
-function judgeGeojsonType(data) {
-    if (data.type === 'FeatureCollection') {
-        return data.features[0].geometry.type
-    } else if (data.type === 'Feature') {
-        return data.geometry.type
-    } else {
-        return data.type
-    }
+function change(id, color) {
+    changeColor(window.map, id, color)
 }
 
-// 移除数据
-function removeData(name) {
-    if (!window.map) return
-    if (!hasDataName(name)) return
-    window.map.removeLayer(name)
-    window.map.getLayer(name + '_other') && window.map.removeLayer(name + '_other')
-    window.map.removeSource(name)
-    uploadList.value = uploadList.value.filter(item => item.name !== name)
-}
-
-// 定位数据
-function locateData(name) {
-    if (!hasDataName(name)) return
-    const source = window.map.getSource(name)
-    if (!source) return
-    source.getBounds().then((bounds) => {
-        window.map.fitBounds(bounds, { padding: 20 })
-    })
-}
-
-// 修改数据颜色
-function changeColor(file, color) {
-    const name = file.name
-    const type = file.geometryType
-    if (!hasDataName(name)) return
-    window.map.setPaintProperty(
-        name,
-        type === 'Polygon' || type === 'MultiPolygon' ? 'fill-color' :
-            type === 'LineString' || type === 'MultiLineString' ? 'line-color' :
-                'circle-color', color
-    )
-}
-
-onBeforeUnmount(() => {
-    uploadList.value.forEach(item => {
-        removeData(item.name)
-    })
-})
 </script>
 
 <style lang="scss" scoped>
