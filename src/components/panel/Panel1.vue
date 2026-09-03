@@ -60,6 +60,34 @@ function handleClose() {
     margin: 20px 0;
     overflow: hidden;
     will-change: transform, opacity;
+    overflow: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #b9cedc transparent;
+
+    &::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background-color: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        border: 1px solid transparent;
+        border-radius: 999px;
+        background-color: #b9cedc;
+        background-clip: padding-box;
+        transition: background-color 180ms ease;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+        background-color: #86aec6;
+    }
+
+    &::-webkit-scrollbar-corner {
+        background-color: transparent;
+    }
 
     .panel-header {
         display: flex;

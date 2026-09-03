@@ -46,6 +46,34 @@ defineProps({
     color: var(--ink);
     background-color: #fff;
     box-shadow: 0 12px 30px rgba(24, 59, 91, 0.16), 0 2px 8px rgba(24, 59, 91, 0.08);
+    overflow: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #b9cedc transparent;
+
+    &::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background-color: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        border: 1px solid transparent;
+        border-radius: 999px;
+        background-color: #b9cedc;
+        background-clip: padding-box;
+        transition: background-color 180ms ease;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+        background-color: #86aec6;
+    }
+
+    &::-webkit-scrollbar-corner {
+        background-color: transparent;
+    }
 }
 
 .panel-heading {
