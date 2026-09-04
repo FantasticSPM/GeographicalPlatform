@@ -1,7 +1,7 @@
 <template>
     <div class="item-card">
         <div class="card-image">
-            <img :src="data.image ?? '/p.png'" alt="" />
+            <img :src="data.image ?? getPublicUrl('/p.png')" alt="" />
         </div>
         <div class="card-info">
             <div class="card-title" :title="data.title">{{ data.title }}</div>
@@ -33,6 +33,7 @@
 <script setup>
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { useRouter } from 'vue-router'
+import { getPublicUrl } from '@/utils/common.js'
 const router = useRouter()
 const props = defineProps({
     data: {

@@ -24,6 +24,7 @@ import DivisionSetting from './DivisionSetting.vue'
 import { handleGeojson } from '@/utils/map.js'
 import { apiGetDistrictByAdcode } from '@/apis/online'
 import { levelMap } from '@/utils/constants'
+import { getPublicUrl } from '@/utils/common.js'
 
 const baseMapName = 'base-map'
 const baseMapKey = 'currentBaseMap'
@@ -32,33 +33,33 @@ const baseMapList = [
         id: 'gaode-satellite',
         type: "raster",
         name: '高德卫星',
-        image: 'https://ssr-next.amap.com/static/amap-pc-ssr/production/b8a20474/_next/static/media/satellite-imagery.640c3d8a.png',
+        image: getPublicUrl('/images/gaode_img.png'),
         url: 'https://webst01.is.autonavi.com/appmaptile?style=6&x={x}&y={y}&z={z}',
     },
     {
         id: 'gaode-standard',
         type: "raster",
         name: '高德矢量',
-        image: 'https://ssr-next.amap.com/static/amap-pc-ssr/production/b8a20474/_next/static/media/standard-map-icon.a56733ec.png',
+        image: getPublicUrl('/images/gaode_vec.png'),
         url: 'https://webrd04.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=7&x={x}&y={y}&z={z}',
     },
     {
         id: 'ArcGIS',
         type: "raster",
         name: 'ArcGIS卫星',
-        image: 'https://ssr-next.amap.com/static/amap-pc-ssr/production/b8a20474/_next/static/media/satellite-imagery.640c3d8a.png',
+        image: getPublicUrl('/images/ArcGIS.png'),
         url: 'https://server.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}.png'
     }, {
         id: 'ArcGIS-vector',
         type: "raster",
         name: 'ArcGIS矢量',
-        image: 'https://ssr-next.amap.com/static/amap-pc-ssr/production/b8a20474/_next/static/media/standard-map-icon.a56733ec.png',
+        image: getPublicUrl('/images/ArcGIS_VEC.png'),
         url: 'https://server.arcgisonline.com/arcgis/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}.png'
     }, {
         id: 'division',
         type: 'vector',
         name: '行政区划',
-        image: 'https://ssr-next.amap.com/static/amap-pc-ssr/production/b8a20474/_next/static/media/standard-map-icon.a56733ec.png',
+        image: getPublicUrl('/images/vector.png'),
     }
 ]
 
