@@ -4,12 +4,12 @@
             <MenuBar></MenuBar>
         </div>
         <div class="geology-body">
-            <Map2D></Map2D>
-            <MapBar class="map-bar-tool"></MapBar>
-            <BaseMapControl class="base-map-control"></BaseMapControl>
             <div class="geology-content">
                 <RouterView></RouterView>
             </div>
+            <Map2D></Map2D>
+            <MapBar class="map-bar-tool"></MapBar>
+            <BaseMapControl class="base-map-control"></BaseMapControl>
         </div>
     </div>
 </template>
@@ -35,6 +35,7 @@ import BaseMapControl from '@/components/map/Control/BaseMapControl/BaseMapContr
         width: 100%;
         position: relative;
         overflow: hidden;
+        display: flex;
 
         .map-bar-tool {
             position: absolute;
@@ -53,14 +54,13 @@ import BaseMapControl from '@/components/map/Control/BaseMapControl/BaseMapContr
         }
 
         .geology-content {
-            position: absolute;
-            top: 0;
-            left: 0;
-            z-index: 999;
-            pointer-events: none;
-            width: 100%;
+            // position: absolute;
+            // top: 0;
+            // left: 0;
+            // z-index: 999;
+            // pointer-events: none;
             height: 100%;
-            padding: 10px;
+            padding: 5px;
         }
     }
 }
