@@ -1,5 +1,5 @@
 <template>
-    <div id="map"></div>
+    <div id="map2d"></div>
 </template>
 
 <script setup>
@@ -30,7 +30,7 @@ function initMap() {
     map = new maplibregl.Map({
         ...defaultOptions,
         ...props.options,
-        container: "map", // container ID
+        container: "map2d", // container ID
         attributionControl: false,
         // projection: {
         //   type: "globe",
@@ -86,7 +86,7 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped>
-#map {
+#map2d {
     width: 100%;
     height: 100%;
     /* background-color: #ccc; */

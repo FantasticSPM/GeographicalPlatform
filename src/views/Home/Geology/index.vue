@@ -4,7 +4,7 @@
             <MenuBar></MenuBar>
         </div>
         <div class="geology-body">
-            <MapContainer></MapContainer>
+            <Map2D></Map2D>
             <MapBar class="map-bar-tool"></MapBar>
             <BaseMapControl class="base-map-control"></BaseMapControl>
             <div class="geology-content">
@@ -16,7 +16,7 @@
 
 <script setup>
 import MenuBar from './components/MenuBar.vue';
-import MapContainer from '@/components/map/MapContainer.vue';
+import Map2D from '@/components/map/Map2D.vue';
 import MapBar from '@/components/map/MapBar/MapBar.vue';
 import BaseMapControl from '@/components/map/Control/BaseMapControl.vue';
 </script>
