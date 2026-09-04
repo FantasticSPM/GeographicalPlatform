@@ -45,7 +45,6 @@ const items = [
     {
         link: 'http://www.baidu.com',
         title: 'xxx市实景三维平台',
-        image: '/p.png'
     },
     {
         link: 'http://www.360.com',
