@@ -30,7 +30,7 @@ const activeIndex = ref(route.fullPath)
 <style lang="scss" scoped>
 .help-container {
     display: flex;
-    height: calc(100vh - 80px - 60px);
+    height: calc(100vh - 80px);
 
     .help-left {
         width: 200px;

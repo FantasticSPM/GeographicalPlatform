@@ -18,13 +18,13 @@
 import MenuBar from './components/MenuBar.vue';
 import Map2D from '@/components/map/Map2D/Map2D.vue';
 import MapBar from '@/components/map/MapBar/MapBar.vue';
-import BaseMapControl from '@/components/map/Control/BaseMapControl.vue';
+import BaseMapControl from '@/components/map/Control/BaseMapControl/BaseMapControl.vue';
 </script>
 
 <style lang="scss" scoped>
 .geology-container {
     display: flex;
-    height: calc(100vh - 80px - 60px);
+    height: calc(100vh - 80px);
 
     .geology-left {
         width: 80px;

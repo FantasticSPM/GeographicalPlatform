@@ -66,9 +66,11 @@
             </div>
         </div>
     </div>
+    <FooterComponent></FooterComponent>
 </template>
 
 <script setup>
+import FooterComponent from '../components/Layouts/FooterComponent.vue'
 import { onMounted, ref } from 'vue'
 const state = ref('')
 const links = ref([])

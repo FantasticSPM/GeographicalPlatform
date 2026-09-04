@@ -7,9 +7,6 @@ import * as Cesium from 'cesium';
 import { onMounted, onUnmounted } from 'vue';
 import 'cesium/Build/Cesium/Widgets/widgets.css';
 
-// const baseUrl = new URL(import.meta.env.BASE_URL, import.meta.url).href
-// window.CESIUM_BASE_URL = new URL('./Cesium', baseUrl).href;
-
 function initMap() {
     const viewer = new Cesium.Viewer('map3d', {
         animation: false, // 控制场景动画的播放速度控件
@@ -24,10 +21,12 @@ function initMap() {
         navigationHelpButton: false, // 默认的相机控制提示控件
         baseLayer: new Cesium.ImageryLayer(new Cesium.UrlTemplateImageryProvider({
             url: 'https://webst01.is.autonavi.com/appmaptile?style=6&x={x}&y={y}&z={z}',
+            maximumLevel: 18
         })),
+        terrain: Cesium.Terrain.fromWorldTerrain(),
     });
     window.viewer = viewer;
-    viewer.scene.globe.enableLighting = true;
+    // viewer.scene.globe.enableLighting = true;
     viewer.scene.globe.depthTestAgainstTerrain = true;
     viewer.scene.globe.showGroundAtmosphere = true; // 显示地球大气层
 
@@ -54,5 +53,9 @@ onUnmounted(() => {
 #map3d {
     width: 100%;
     height: 100%;
+
+    &:deep(.cesium-widget-credits) {
+        display: none;
+    }
 }
 </style>

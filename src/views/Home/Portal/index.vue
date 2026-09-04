@@ -139,7 +139,12 @@
             </div>
         </section>
     </div>
+    <FooterComponent></FooterComponent>
 </template>
+
+<script setup>
+import FooterComponent from '../components/Layouts/FooterComponent.vue'
+</script>
 
 <style lang="scss" scoped>
 .portal-page {

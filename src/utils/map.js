@@ -1,5 +1,5 @@
 // 加载geojson数据
-export function handleGeojson(map, data, id = 'uploaded-geojson', styleMap = {}) {
+export function handleGeojson(map, data, id = 'uploaded-geojson', styleMap = {}, insertId) {
     const geometryType = judgeGeojsonType(data)
     let style = styleMap[geometryType] ?? {}
     map.addSource(id, {
@@ -17,17 +17,17 @@ export function handleGeojson(map, data, id = 'uploaded-geojson', styleMap = {})
                 'fill-color': style.color ?? '#007acc',
                 'fill-opacity': style.opacity ?? 0.5
             }
-        })
+        }, insertId)
         map.addLayer({
             id: id + '_other',
             type: 'line',
             source: id,
             layout: {},
             paint: {
-                "line-color": style.color ?? '#fff',
+                "line-color": style.color ?? '#000',
                 "line-width": style.width ?? 1,
             },
-        })
+        }, insertId)
     } else if (geometryType === 'line') {
         map.addLayer({
             id,
