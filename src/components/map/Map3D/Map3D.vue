@@ -8,7 +8,7 @@ import { onMounted, onUnmounted } from 'vue';
 import 'cesium/Build/Cesium/Widgets/widgets.css';
 
 const baseUrl = new URL(import.meta.env.BASE_URL, import.meta.url).href
-window.CESIUM_BASE_URL = new URL('/Cesium', baseUrl).href;
+window.CESIUM_BASE_URL = new URL('./Cesium', baseUrl).href;
 
 function initMap() {
     const viewer = new Cesium.Viewer('map3d', {

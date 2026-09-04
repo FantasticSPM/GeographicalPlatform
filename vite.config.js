@@ -11,7 +11,7 @@ export default defineConfig((e) => {
       vue(),
       vueDevTools(),
     ],
-    base: e.mode === "production" ? "/GeographicalPlatform" : "./",
+    base: e.mode === "production" ? "/GeographicalPlatform/" : "./",
     resolve: {
       alias: {
         '@': fileURLToPath(new URL('./src', import.meta.url)),
