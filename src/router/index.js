@@ -38,6 +38,11 @@ const router = createRouter({
           ]
         },
         {
+          path: 'earthquake',
+          name: 'earthquake',
+          component: () => import('@/views/Home/Earthquake/index.vue')
+        },
+        {
           path: 'weather',
           name: 'weather',
           component: () => import('@/views/Home/Weather/index.vue')

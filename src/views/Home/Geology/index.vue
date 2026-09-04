@@ -16,7 +16,7 @@
 
 <script setup>
 import MenuBar from './components/MenuBar.vue';
-import Map2D from '@/components/map/Map2D.vue';
+import Map2D from '@/components/map/Map2D/Map2D.vue';
 import MapBar from '@/components/map/MapBar/MapBar.vue';
 import BaseMapControl from '@/components/map/Control/BaseMapControl.vue';
 </script>
