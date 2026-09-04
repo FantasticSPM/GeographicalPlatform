@@ -1,0 +1,1 @@
+import{U as e,d as t,f as n,nt as r,t as i,z as a}from"./_plugin-vue_export-helper-CQupvBJ6.js";var o={};function s(i,o){let s=e(`el-footer`);return a(),n(s,null,{default:r(()=>[...o[0]||=[t(`div`,{class:`footer-warp`},` 版权所有：© 2026 地理空间资源信息平台 `,-1)]]),_:1})}var c=i(o,[[`render`,s],[`__scopeId`,`data-v-5724d687`]]);export{c as t};
