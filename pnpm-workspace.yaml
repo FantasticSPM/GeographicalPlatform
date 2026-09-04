@@ -1,2 +1,2 @@
-onlyBuiltDependencies:
-  - '@parcel/watcher'
+allowBuilds:
+  '@parcel/watcher@2.6.0': true
