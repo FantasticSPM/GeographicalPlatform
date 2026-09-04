@@ -1,0 +1,1 @@
+function e(e){e.startsWith(`/`)&&(e=`.${e}`);let t=new URL(`/GeographicalPlatform/`,import.meta.url).href;return new URL(e,t).href}export{e as t};
