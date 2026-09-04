@@ -17,7 +17,7 @@ const route = useRoute()
 const activeIndex = ref(route.fullPath)
 
 const items = [
-    { index: '/geology/catalog', name: '目录', icon: FolderOpened },
+    { index: '/geology/catalog', name: '资源目录', icon: FolderOpened },
     { index: '/geology/upload', name: '数据上传', icon: UploadFilled },
     { index: '/geology/data1', name: '分享', icon: Share },
 ]

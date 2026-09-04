@@ -1,5 +1,5 @@
 <template>
-    <Panel title="目录">
+    <Panel title="资源目录">
         <el-tree class="catalog-tree" :data="sourceStore.source" show-checkbox node-key="id" :props="defaultProps"
             empty-text="暂无目录数据" @node-click="handleNodeClick" @check-change="handleNodeCheck"
             :default-checked-keys="['upload']">
