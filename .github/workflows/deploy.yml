@@ -6,7 +6,7 @@ on:
     branches:
       - main
 
-# 给 GitHub Actions 写入仓库内容的权限
+# 给 GitHub Actions 授予写入仓库的权限
 permissions:
   contents: write
 
@@ -19,12 +19,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # 2. 安装 Node.js
+      # 2. 安装 Node.js 22
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: pnpm
 
       # 3. 安装 pnpm 11.24.0
       - name: Setup pnpm
@@ -33,23 +32,38 @@ jobs:
           version: 11.24.0
           run_install: false
 
-      # 4. 安装依赖
+      # 4. 配置 pnpm 缓存
+      - name: Setup pnpm cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.local/share/pnpm/store
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-
+
+      # 5. 检查 Node 和 pnpm 版本
+      - name: Check versions
+        run: |
+          node -v
+          pnpm -v
+
+      # 6. 安装依赖
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      # 5. 构建项目
+      # 7. 构建项目
       - name: Build project
         run: pnpm build
 
-      # 6. 将 index.html 复制成 404.html
-      #    解决 Vue/Vite SPA 刷新页面 404 的问题
+      # 8. 将 index.html 复制成 404.html
       - name: Copy index.html to 404.html
         run: cp dist/index.html dist/404.html
 
-      # 7. 部署到 gh-pages
+      # 9. 部署到 gh-pages
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
           publish_branch: gh-pages
+
