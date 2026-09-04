@@ -1,34 +1,48 @@
 name: Deploy to GitHub Pages
 
+# 当 main 分支有 push 时自动执行
 on:
   push:
     branches:
       - main
+
+# 给 GitHub Actions 写入仓库内容的权限
+permissions:
+  contents: write
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      # 1. 拉取代码
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: 22
+      # 2. 安装 Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
 
-    - name: Install dependencies
-      run: npm install
+      # 3. 安装依赖
+      - name: Install dependencies
+        run: npm install
 
-    - name: Build project
-      run: npm run build
-      
-    - name: Copy index.html to 404.html
-      run: cp dist/index.html dist/404.html
+      # 4. 构建项目
+      - name: Build project
+        run: npm run build
 
-    - name: Deploy to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./dist
+      # 5. 将 index.html 复制成 404.html
+      #    解决 Vue/Vite SPA 刷新页面 404 的问题
+      - name: Copy index.html to 404.html
+        run: cp dist/index.html dist/404.html
+
+      # 6. 部署到 gh-pages
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          publish_branch: gh-pages
