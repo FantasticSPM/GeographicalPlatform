@@ -6,7 +6,10 @@
 import * as Cesium from 'cesium';
 import { onMounted, onUnmounted } from 'vue';
 import 'cesium/Build/Cesium/Widgets/widgets.css';
-window.CESIUM_BASE_URL = '/Cesium';
+
+const baseUrl = new URL(import.meta.env.BASE_URL, import.meta.url).href
+window.CESIUM_BASE_URL = new URL('/Cesium', baseUrl).href;
+
 function initMap() {
     const viewer = new Cesium.Viewer('map3d', {
         animation: false, // 控制场景动画的播放速度控件
