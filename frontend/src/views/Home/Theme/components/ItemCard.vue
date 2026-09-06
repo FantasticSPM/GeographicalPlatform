@@ -1,7 +1,7 @@
 <template>
     <div class="item-card">
         <div class="card-image">
-            <img :src="data.image ?? getPublicUrl('/p.png')" alt="" />
+            <img :src="data.image ?? getPublicUrl('/images/p.png')" alt="" />
         </div>
         <div class="card-info">
             <div class="card-title" :title="data.title">{{ data.title }}</div>

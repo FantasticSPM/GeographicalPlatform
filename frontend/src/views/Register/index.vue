@@ -261,7 +261,7 @@ async function handleSubmit() {
     overflow-x: hidden;
     color: #fff;
     background-color: #09233b;
-    background-image: url("/portal-earth.jpg");
+    background-image: url("/images/portal-earth.jpg");
     background-position: center;
     background-size: cover;
     isolation: isolate;

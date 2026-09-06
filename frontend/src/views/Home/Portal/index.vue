@@ -169,7 +169,7 @@ import FooterComponent from '../components/Layouts/FooterComponent.vue'
     overflow: hidden;
     isolation: isolate;
     background-color: #06182b;
-    background-image: url("/portal-earth.jpg");
+    background-image: url("/images/portal-earth.jpg");
     background-position: center 56%;
     background-size: cover;
 }
