@@ -5,7 +5,7 @@ import axios from 'axios';
 import * as cheerio from 'cheerio';
 
 type EarthquakeItem = {
-  text: string;
+  content: string;
   id: string | undefined;
 };
 
@@ -16,21 +16,20 @@ export class EarthquakeService {
   }
 
   async findAll(): Promise<EarthquakeItem[]> {
-    const result = await axios.get('https://data.earthquake.cn/index.html')
+    const result = await axios.get('https://data.earthquake.cn/index.html');
 
     const $ = cheerio.load(result.data);
 
     const data: EarthquakeItem[] = [];
     $('.dynamic-box ul li').each((_, el) => {
-
-      const a = $(el).find('a').first()
-      const id = a.attr('href')
-      const text = $(el).text().trim()
+      const a = $(el).find('a').first();
+      const id = a.attr('href');
+      const text = $(el).text().trim();
       data.push({
-        text,
-        id
-      })
-    })
+        id,
+        content: text,
+      });
+    });
     return data;
   }
 
