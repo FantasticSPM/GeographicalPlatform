@@ -1,0 +1,99 @@
+{
+  // 禁用全局格式化配置，强制使用项目配置
+  "prettier.enable": true,
+  "eslint.enable": true,
+
+  // 明确指出ESLint和Prettier的工作模式
+  // Prettier：格式化；ESLint：代码质量检查
+  "editor.defaultFormatter": "esbenp.prettier-vscode", // 格式化用Prettier
+  "editor.formatOnSave": true, // 保存时自动格式化
+  "editor.formatOnPaste": false, // 关闭粘贴时格式化，避免卡顿
+  "editor.formatOnType": false, // 关闭输入时格式化
+
+  // 配置ESLint：只做检查，不做格式化
+  "eslint.run": "onType", // 在输入时进行检查（减轻保存时压力）
+  "eslint.format.enable": false, // 确保ESLint不进行格式化
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit" // 保存时按需修复ESLint错误
+  },
+
+  // ESLint验证文件类型
+  "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact", "vue"],
+
+  // 为不同文件类型指定格式化器（确保Prettier接管）
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[vue]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[css]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[scss]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+
+  // 关闭所有可能干扰或重复的内置检查，提升性能
+  "javascript.suggestionActions.enabled": false,
+  "typescript.suggestionActions.enabled": false,
+  "css.validate": false,
+  "less.validate": false,
+  "scss.validate": false,
+  "html.validate.scripts": false,
+  "html.validate.styles": false,
+
+  // 确保EditorConfig生效
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  "editor.detectIndentation": false, // 禁止VSCode猜测缩进，强制使用项目配置
+
+  // 拼写检测，确保以下拼写不触发警告
+  "cSpell.words": [
+    "bbox",
+    "CGCS",
+    "Czml",
+    "earthview",
+    "EPSG",
+    "fovy",
+    "Geolocate",
+    "geoserver",
+    "GLTF",
+    "mapbox",
+    "mapboxgl",
+    "maxHeight",
+    "maxzoom",
+    "minHeight",
+    "minzoom",
+    "nodelist",
+    "polyline",
+    "shenzhen",
+    "terraformer",
+    "tilecol",
+    "tilematrix",
+    "tilematrixset",
+    "tilerow",
+    "Tileset",
+    "tilesets",
+    "TODELETE",
+    "TODO",
+    "togeojson",
+    "unplugin",
+    "unproject",
+    "VITE",
+    "WMTS"
+  ],
+  "liveServer.settings.port": 5501
+}
