@@ -1,6 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { CreateEarthquakeDto } from './dto/create-earthquake.dto.js';
 import { UpdateEarthquakeDto } from './dto/update-earthquake.dto.js';
+import axios from 'axios';
+import * as cheerio from 'cheerio';
+
+type EarthquakeItem = {
+  text: string;
+  id: string | undefined;
+};
 
 @Injectable()
 export class EarthquakeService {
@@ -8,8 +15,23 @@ export class EarthquakeService {
     return 'This action adds a new earthquake';
   }
 
-  findAll() {
-    return `This action returns all earthquake`;
+  async findAll(): Promise<EarthquakeItem[]> {
+    const result = await axios.get('https://data.earthquake.cn/index.html')
+
+    const $ = cheerio.load(result.data);
+
+    const data: EarthquakeItem[] = [];
+    $('.dynamic-box ul li').each((_, el) => {
+
+      const a = $(el).find('a').first()
+      const id = a.attr('href')
+      const text = $(el).text().trim()
+      data.push({
+        text,
+        id
+      })
+    })
+    return data;
   }
 
   findOne(id: number) {

@@ -11,6 +11,8 @@
 import Map3D from '@/components/map/Map3D/Map3D.vue'
 import NewsAnnounce from './components/NewsAnnounce.vue';
 
+import { apiGetEarthquakeList } from '@/apis/backend/earthquake.js';
+
 const messages = [
     {
         id: 1,
@@ -25,6 +27,14 @@ const messages = [
         message: '2023年10月3日，我国某地区发生5.5级地震，造成轻微的人员伤亡和财产损失。'
     }
 ]
+
+function getEarthquakeList() {
+    apiGetEarthquakeList().then(res => {
+        console.log(res);
+    })
+}
+
+getEarthquakeList()
 </script>
 
 <style lang="scss" scoped>
