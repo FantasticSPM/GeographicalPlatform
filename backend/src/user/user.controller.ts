@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Req,
+  UseGuards,
 } from '@nestjs/common';
 import { UserService } from './user.service.js';
 import { UpdateProfileDto } from './dto/update-profile.dto.js';
@@ -16,8 +17,11 @@ import type {
   UserProfile,
 } from '../common/interfaces/auth.interface.js';
 import { Response as ApiResponseFactory } from '../common/interceptors/Response.js';
+import { AuthGuard } from '@nestjs/passport';
+import { AccessTokenGuard } from '../auth/guards/access-token.guard.js';
 
 @Controller('user')
+@UseGuards(AccessTokenGuard)
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
@@ -46,10 +50,7 @@ export class UserController {
     @Req() request: AuthenticatedRequest,
     @Body() changePasswordDto: ChangePasswordDto,
   ): Promise<ApiResponse<null>> {
-    await this.userService.changePassword(
-      request.user.id,
-      changePasswordDto,
-    );
+    await this.userService.changePassword(request.user.id, changePasswordDto);
     return ApiResponseFactory.success(null, '密码修改成功');
   }
 

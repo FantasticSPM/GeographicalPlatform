@@ -7,6 +7,7 @@ import {
   Body,
   Req,
   Res,
+  UseGuards,
 } from '@nestjs/common';
 import { AuthService } from './auth.service.js';
 import { CreateAuthDto } from './dto/create-auth.dto.js';
@@ -21,6 +22,7 @@ import type {
 import type { ApiResponse } from '../common/interfaces/api-response.interface.js';
 import { Response as ApiResponseFactory } from '../common/interceptors/Response.js';
 import type { Request, Response as ExpressResponse } from 'express';
+import { AccessTokenGuard } from './guards/access-token.guard.js';
 
 @Controller('auth')
 export class AuthController {
@@ -62,6 +64,7 @@ export class AuthController {
 
   @Post('logout')
   @HttpCode(HttpStatus.OK)
+  @UseGuards(AccessTokenGuard)
   async logout(
     @Req() request: AuthenticatedRequest,
     @Body() logoutDto: LogoutDto,
@@ -71,10 +74,10 @@ export class AuthController {
   }
 
   @Get('me')
+  @UseGuards(AccessTokenGuard)
   async me(
     @Req() request: AuthenticatedRequest,
   ): Promise<ApiResponse<UserProfile>> {
-    console.log(2);
     const data = await this.authService.me(request?.user?.id);
     return ApiResponseFactory.success(data);
   }
