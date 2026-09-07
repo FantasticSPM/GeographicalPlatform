@@ -4,10 +4,12 @@ import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 import vueDevTools from "vite-plugin-vue-devtools";
 import { viteStaticCopy } from "vite-plugin-static-copy";
+import { loadEnv } from "vite";
 
 // https://vite.dev/config/
 export default defineConfig((e) => {
-  const baseUrl = e.mode === "production" ? "/GeographicalPlatform/" : "./";
+  const env = loadEnv(e.mode, process.cwd());
+  const baseUrl = env.VITE_BASE_URL || "/";
   const cesiumSource = "node_modules/cesium/Build/Cesium";
   const cesiumBaseUrl = "Cesium";
   const cesiumDir = ["ThirdParty", "Workers", "Assets", "Widgets"];
