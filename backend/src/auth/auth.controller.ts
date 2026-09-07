@@ -72,13 +72,4 @@ export class AuthController {
     await this.authService.logout(request.user.id, logoutDto);
     return ApiResponseFactory.success(null, '退出登录成功');
   }
-
-  @Get('me')
-  @UseGuards(AccessTokenGuard)
-  async me(
-    @Req() request: AuthenticatedRequest,
-  ): Promise<ApiResponse<UserProfile>> {
-    const data = await this.authService.me(request?.user?.id);
-    return ApiResponseFactory.success(data);
-  }
 }

@@ -5,8 +5,10 @@ import type { UserProfile } from '../common/interfaces/auth.interface.js';
 
 @Injectable()
 export class UserService {
-  findOne(_id: number | string): Promise<UserProfile> {
-    throw new Error('UserService.findOne is not implemented');
+  findOne(_id: number | string): any {
+    return {
+      _id,
+    };
   }
 
   update(

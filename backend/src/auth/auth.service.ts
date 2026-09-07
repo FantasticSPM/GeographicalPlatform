@@ -114,6 +114,20 @@ export class AuthService {
       throw new UnauthorizedException('密码错误!');
     }
 
+    // 单会话策略：创建新会话前，撤销该用户仍然有效的旧会话。
+    const revokedAt = new Date();
+    await this.authRepository
+      .createQueryBuilder()
+      .update(Auth)
+      .set({
+        revoked_at: revokedAt,
+        updated_at: revokedAt,
+      })
+      .where('user_id = :userId', { userId: +user.id })
+      .andWhere('revoked_at IS NULL')
+      .andWhere('expires_at > :now', { now: revokedAt })
+      .execute();
+
     // 创建会话
     const sessionId = generateUniqueId();
 
@@ -132,6 +146,7 @@ export class AuthService {
     const access_token = await this.jwtService.signAsync(
       {
         userId: user.id,
+        sessionId,
       },
       {
         secret: SECRET_KEY,
@@ -161,7 +176,7 @@ export class AuthService {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
-      maxAge: (15 * 60 * 1000) / 15 / 1,
+      maxAge: 15 * 60 * 1000,
     });
 
     response.cookie('refresh_token', refresh_token, {
