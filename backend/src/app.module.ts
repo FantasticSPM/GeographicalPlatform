@@ -3,26 +3,26 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller.js';
 import { AppService } from './app.service.js';
 import { EarthquakeModule } from './earthquake/earthquake.module.js';
-
-
+import { UserModule } from './user/user.module.js';
+import { AuthModule } from './auth/auth.module.js';
 
 @Module({
   imports: [
-    // TypeOrmModule.forRoot({
-    //   type: 'mysql',
-    //   host: 'localhost',
-    //   port: 3306,
-    //   username: 'root',
-    //   password: 'QAZxsw123',
-    //   timezone: '+08:00',
-    //   database: 'geographicalplatform',
-    //   autoLoadEntities: true,
-    //   synchronize: true, //自动同步数据库
-    // }),
+    TypeOrmModule.forRoot({
+      type: 'postgres',
+      host: 'localhost',
+      port: 5432,
+      username: 'postgres',
+      password: 'admin',
+      database: 'geographicalplatform',
+      autoLoadEntities: true,
+      synchronize: true, //自动同步数据库
+    }),
     EarthquakeModule,
-
+    UserModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule { }
+export class AppModule {}
