@@ -26,10 +26,11 @@ export class Auth {
   expires_at: Date;
 
   @Column({
+    type: 'timestamp',
     nullable: true,
     comment: '撤销时间',
   })
-  revoked_at: Date;
+  revoked_at: Date | null;
 
   @Column({
     comment: '创建时间',
