@@ -6,6 +6,7 @@ export interface UserProfile {
   avatar: string | null;
   lastLoginAt?: string | null;
   createdAt?: string;
+  [key: string]: any;
 }
 
 export interface AuthTokens {
