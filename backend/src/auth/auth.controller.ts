@@ -31,12 +31,8 @@ export class AuthController {
 
   @Post('register')
   async register(@Body() createAuthDto: CreateAuthDto) {
-    try {
-      const data = await this.authService.register(createAuthDto);
-      return ApiResponseFactory.success(data, '注册成功');
-    } catch (e: any) {
-      return ApiResponseFactory.error(e?.message || '注册失败', 400);
-    }
+    const data = await this.authService.register(createAuthDto ?? {});
+    return ApiResponseFactory.success(data, '注册成功');
   }
 
   @Post('login')
@@ -46,33 +42,29 @@ export class AuthController {
     @Res({ passthrough: true }) response: ExpressResponse,
     @Body() loginDto: LoginDto,
   ) {
-    try {
-      const data = await this.authService.login(loginDto, ip);
+    const data = await this.authService.login(loginDto ?? {}, ip);
 
-      const { access_token, refresh_token } = data;
+    const { access_token, refresh_token } = data;
 
-      // 4. 写入 Cookie
-      response.cookie('access_token', access_token, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'lax',
-        maxAge: 15 * 60 * 1000,
-      });
+    // 4. 写入 Cookie
+    response.cookie('access_token', access_token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 15 * 60 * 1000,
+    });
 
-      response.cookie('refresh_token', refresh_token, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'lax',
-        maxAge: 7 * 24 * 60 * 60 * 1000,
-      });
+    response.cookie('refresh_token', refresh_token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
 
-      delete data.password;
-      delete data.access_token;
-      delete data.refresh_token;
-      return ApiResponseFactory.success(data, '登录成功');
-    } catch (e: any) {
-      return ApiResponseFactory.error(e?.message || '登录失败', 400);
-    }
+    delete data.password;
+    delete data.access_token;
+    delete data.refresh_token;
+    return ApiResponseFactory.success(data, '登录成功');
   }
 
   @Post('refresh')

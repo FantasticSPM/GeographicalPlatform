@@ -1,4 +1,8 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { CreateAuthDto } from './dto/create-auth.dto.js';
 import { LoginDto } from './dto/login.dto.js';
 import { RefreshTokenDto } from './dto/refresh-token.dto.js';
@@ -34,12 +38,12 @@ export class AuthService {
   async register(_createAuthDto: CreateAuthDto): Promise<UserProfile> {
     // 判断是否有用户名
     if (!define(_createAuthDto.username)) {
-      throw new Error('用户名不能为空!');
+      throw new BadRequestException('用户名不能为空!');
     }
 
     // 判断是否有密码
     if (!define(_createAuthDto.password)) {
-      throw new Error('密码不能为空!');
+      throw new BadRequestException('密码不能为空!');
     }
 
     // 判断是否有昵称
@@ -55,7 +59,7 @@ export class AuthService {
     });
 
     if (user) {
-      throw new Error('用户名已存在!');
+      throw new BadRequestException('用户名已存在!');
     }
 
     const currentTime = new Date();
