@@ -17,7 +17,6 @@ import type {
   UserProfile,
 } from '../common/interfaces/auth.interface.js';
 import { Response as ApiResponseFactory } from '../common/interceptors/Response.js';
-import { AuthGuard } from '@nestjs/passport';
 import { AccessTokenGuard } from '../auth/guards/access-token.guard.js';
 
 @Controller('user')
