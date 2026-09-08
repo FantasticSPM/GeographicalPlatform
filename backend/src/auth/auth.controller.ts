@@ -7,6 +7,7 @@ import {
   Body,
   Req,
   Res,
+  Ip,
   UseGuards,
 } from '@nestjs/common';
 import { AuthService } from './auth.service.js';
@@ -41,12 +42,33 @@ export class AuthController {
   @Post('login')
   @HttpCode(HttpStatus.OK)
   async login(
-    @Req() request: Request,
+    @Ip() ip: string,
     @Res({ passthrough: true }) response: ExpressResponse,
     @Body() loginDto: LoginDto,
   ) {
     try {
-      const data = await this.authService.login(loginDto, request, response);
+      const data = await this.authService.login(loginDto, ip);
+
+      const { access_token, refresh_token } = data;
+
+      // 4. 写入 Cookie
+      response.cookie('access_token', access_token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        maxAge: 15 * 60 * 1000,
+      });
+
+      response.cookie('refresh_token', refresh_token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+      });
+
+      delete data.password;
+      delete data.access_token;
+      delete data.refresh_token;
       return ApiResponseFactory.success(data, '登录成功');
     } catch (e: any) {
       return ApiResponseFactory.error(e?.message || '登录失败', 400);

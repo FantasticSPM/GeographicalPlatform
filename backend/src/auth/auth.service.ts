@@ -19,7 +19,6 @@ import { Auth } from './entities/auth.entity.js';
 import CryptoJS from 'crypto-js';
 import { JwtService } from '@nestjs/jwt';
 import { SECRET_KEY, SECRET_KEY_BACKEND } from '../constant/index.js';
-import type { Request, Response as ExpressResponse } from 'express';
 
 @Injectable()
 export class AuthService {
@@ -78,11 +77,7 @@ export class AuthService {
     return resultInfo;
   }
 
-  async login(
-    _loginDto: LoginDto,
-    request: Request,
-    response: ExpressResponse,
-  ): Promise<UserProfile> {
+  async login(_loginDto: LoginDto, ip: string): Promise<UserProfile> {
     if (!define(_loginDto.username)) {
       throw new UnauthorizedException('用户名不能为空!');
     }
@@ -90,10 +85,6 @@ export class AuthService {
     if (!define(_loginDto.password)) {
       throw new UnauthorizedException('密码不能为空!');
     }
-
-    // console.log(response.cookie({
-    //   name:''
-    // }));
 
     const user = await this.userRepository.findOne({
       where: {
@@ -131,9 +122,7 @@ export class AuthService {
     // 创建会话
     const sessionId = generateUniqueId();
 
-    const ip = request.ip
-      ?.replace(/^::ffff:/, '')
-      .replace(/^::1$/, '127.0.0.1');
+    const _ip = ip?.replace(/^::ffff:/, '').replace(/^::1$/, '127.0.0.1');
 
     const refresh_token = await this.jwtService.signAsync({
       sessionId,
@@ -157,7 +146,7 @@ export class AuthService {
     const newSession = this.authRepository.create({
       id: sessionId,
       user_id: +user.id,
-      ip_address: ip,
+      ip_address: _ip,
       refresh_token,
       created_at,
       expires_at,
@@ -168,23 +157,10 @@ export class AuthService {
 
     const data: UserProfile = {
       ...user,
+      access_token,
+      refresh_token,
     };
-    delete data.password;
 
-    // 4. 写入 Cookie
-    response.cookie('access_token', access_token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      maxAge: 15 * 60 * 1000,
-    });
-
-    response.cookie('refresh_token', refresh_token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-    });
     return data;
   }
 
