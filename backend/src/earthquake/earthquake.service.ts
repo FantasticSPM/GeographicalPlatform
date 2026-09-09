@@ -3,7 +3,6 @@ import { CreateEarthquakeDto } from './dto/create-earthquake.dto.js';
 import { UpdateEarthquakeDto } from './dto/update-earthquake.dto.js';
 import axios from 'axios';
 import * as cheerio from 'cheerio';
-import { Response } from '../common/interceptors/Response.js';
 
 type EarthquakeItem = {
   id: string | number | undefined;
@@ -82,7 +81,7 @@ export class EarthquakeService {
     }
 
     const data = await getDataByIsExpire(listCache, getData);
-    return Response.success(data);
+    return data;
   }
 
   async findOne(id: number | string) {
@@ -127,7 +126,7 @@ export class EarthquakeService {
       return data;
     }
     const data = await getData(id);
-    return Response.success(data);
+    return data;
   }
 
   update(id: number, updateEarthquakeDto: UpdateEarthquakeDto) {

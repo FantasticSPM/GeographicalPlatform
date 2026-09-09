@@ -21,7 +21,6 @@ import type {
   UserProfile,
 } from '../common/interfaces/auth.interface.js';
 import type { ApiResponse } from '../common/interfaces/api-response.interface.js';
-import { Response as ApiResponseFactory } from '../common/interceptors/Response.js';
 import type { Request, Response as ExpressResponse } from 'express';
 import { AccessTokenGuard } from './guards/access-token.guard.js';
 
@@ -30,9 +29,9 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('register')
-  async register(@Body() createAuthDto: CreateAuthDto) {
+  async register(@Body() createAuthDto: CreateAuthDto): Promise<any> {
     const data = await this.authService.register(createAuthDto ?? {});
-    return ApiResponseFactory.success(data, '注册成功');
+    return data;
   }
 
   @Post('login')
@@ -41,7 +40,7 @@ export class AuthController {
     @Ip() ip: string,
     @Res({ passthrough: true }) response: ExpressResponse,
     @Body() loginDto: LoginDto,
-  ) {
+  ): Promise<any> {
     const data = await this.authService.login(loginDto ?? {}, ip);
 
     const { access_token, refresh_token } = data;
@@ -64,23 +63,21 @@ export class AuthController {
     delete data.password;
     delete data.access_token;
     delete data.refresh_token;
-    return ApiResponseFactory.success(data, '登录成功');
+    return data;
   }
 
   @Post('refresh')
   @HttpCode(HttpStatus.OK)
-  async refresh(
-    @Body() refreshTokenDto: RefreshTokenDto,
-  ): Promise<ApiResponse<AuthTokens>> {
+  async refresh(@Body() refreshTokenDto: RefreshTokenDto): Promise<any> {
     const data = await this.authService.refresh(refreshTokenDto);
-    return ApiResponseFactory.success(data, 'Token 刷新成功');
+    return data;
   }
 
   @Post('logout')
   @HttpCode(HttpStatus.OK)
   @UseGuards(AccessTokenGuard)
-  async logout(@Req() request): Promise<ApiResponse<null>> {
+  async logout(@Req() request): Promise<any> {
     await this.authService.logout(request);
-    return ApiResponseFactory.success(null, '退出登录成功');
+    return null;
   }
 }

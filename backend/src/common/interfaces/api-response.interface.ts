@@ -3,4 +3,6 @@ export interface ApiResponse<T> {
   msg: string;
   data: T;
   success: boolean;
+  timestamp: number | string | Date;
+  path: string;
 }

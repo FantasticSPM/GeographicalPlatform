@@ -16,7 +16,6 @@ import type {
   AuthenticatedRequest,
   UserProfile,
 } from '../common/interfaces/auth.interface.js';
-import { Response as ApiResponseFactory } from '../common/interceptors/Response.js';
 import { AccessTokenGuard } from '../auth/guards/access-token.guard.js';
 
 @Controller('user')
@@ -25,46 +24,42 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get('me')
-  async me(
-    @Req() request: AuthenticatedRequest,
-  ): Promise<ApiResponse<UserProfile>> {
+  async me(@Req() request: AuthenticatedRequest) {
     const data = await this.userService.findOne(String(request.user.id));
     delete data.password;
-    return ApiResponseFactory.success(data);
+    return data;
   }
 
   @Patch('me')
   async updateMe(
     @Req() request: AuthenticatedRequest,
     @Body() updateProfileDto: UpdateProfileDto,
-  ): Promise<ApiResponse<UserProfile>> {
+  ): Promise<any> {
     const data = await this.userService.update(
       request.user.id,
       updateProfileDto,
     );
-    return ApiResponseFactory.success(data, '用户资料更新成功');
+    return data;
   }
 
   @Patch('me/password')
   async changePassword(
     @Req() request: AuthenticatedRequest,
     @Body() changePasswordDto: ChangePasswordDto,
-  ): Promise<ApiResponse<null>> {
+  ): Promise<any> {
     await this.userService.changePassword(request.user.id, changePasswordDto);
-    return ApiResponseFactory.success(null, '密码修改成功');
+    return null;
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string): Promise<ApiResponse<UserProfile>> {
+  async findOne(@Param('id') id: string): Promise<any> {
     const data = await this.userService.findOne(id);
-    return ApiResponseFactory.success(data);
+    return data;
   }
 
   @Delete('me')
-  async removeMe(
-    @Req() request: AuthenticatedRequest,
-  ): Promise<ApiResponse<null>> {
+  async removeMe(@Req() request: AuthenticatedRequest): Promise<any> {
     await this.userService.remove(request.user.id);
-    return ApiResponseFactory.success(null, '账号已注销');
+    return null;
   }
 }
