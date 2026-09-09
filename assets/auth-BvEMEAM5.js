@@ -1,1 +1,0 @@
-import{t as e}from"./request-L_WicWmB.js";function t(t){return e({url:`/auth/register`,method:`post`,data:t})}function n(t){return e({url:`/auth/login`,method:`post`,data:t})}export{t as n,n as t};

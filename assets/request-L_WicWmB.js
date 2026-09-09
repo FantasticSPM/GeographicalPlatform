@@ -1,1 +1,0 @@
-import{t as e}from"./axios-DVBxlTkc.js";var t=e.create({baseURL:`http://localhost:3000`,timeout:1e4,withCredentials:!0});t.interceptors.request.use(function(e){return e},function(e){return Promise.reject(e)}),t.interceptors.response.use(function(e){return e.data},function(e){return Promise.reject(e)});export{t};
