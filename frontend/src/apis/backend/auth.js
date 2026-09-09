@@ -17,3 +17,11 @@ export function apiLogin(data) {
     data,
   });
 }
+
+// 登出
+export function apiLogout() {
+  return request({
+    url: "/auth/logout",
+    method: "post",
+  });
+}

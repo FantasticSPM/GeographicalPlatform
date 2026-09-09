@@ -191,8 +191,14 @@ export class AuthService {
     throw new Error('AuthService.refresh is not implemented');
   }
 
-  logout(_userId: number | string, _logoutDto: LogoutDto): Promise<void> {
-    throw new Error('AuthService.logout is not implemented');
+  async logout(req): Promise<any> {
+    const sessionId = req.user?.sessionId;
+    const revokedAt = new Date();
+    const session = await this.authRepository.update(sessionId, {
+      revoked_at: revokedAt,
+      updated_at: revokedAt,
+    });
+    return;
   }
 
   me(_userId: number | string): Promise<UserProfile> {

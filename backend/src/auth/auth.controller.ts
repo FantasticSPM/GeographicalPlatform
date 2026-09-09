@@ -79,11 +79,8 @@ export class AuthController {
   @Post('logout')
   @HttpCode(HttpStatus.OK)
   @UseGuards(AccessTokenGuard)
-  async logout(
-    @Req() request: AuthenticatedRequest,
-    @Body() logoutDto: LogoutDto,
-  ): Promise<ApiResponse<null>> {
-    await this.authService.logout(request.user.id, logoutDto);
+  async logout(@Req() request): Promise<ApiResponse<null>> {
+    await this.authService.logout(request);
     return ApiResponseFactory.success(null, '退出登录成功');
   }
 }

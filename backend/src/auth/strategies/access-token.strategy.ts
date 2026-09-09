@@ -52,6 +52,7 @@ export class AccessTokenStrategy extends PassportStrategy(Strategy) {
     return {
       id: payload.userId,
       username: payload.username ?? '',
+      sessionId: payload.sessionId,
     };
   }
 }

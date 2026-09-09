@@ -20,7 +20,7 @@
             <span>账号</span>
             <el-icon><ArrowRight /></el-icon>
           </div>
-          <el-button size="small">退出登录</el-button>
+          <el-button size="small" @click="logout">退出登录</el-button>
         </div>
         <div class="flex-center" style="gap: 10px">
           <el-avatar class="avatar" :src="avatarUrl" />
@@ -51,10 +51,21 @@
 import { useUserStore } from "@/stores/user";
 import { computed } from "vue";
 import { getPublicUrl } from "@/utils/common";
+import { apiLogout } from "@/apis/backend/auth";
+import { useRouter } from "vue-router";
+import { ElMessage } from "element-plus";
 const userStore = useUserStore();
+const router = useRouter();
 const avatarUrl = computed(() => {
   return userStore.user?.avatar || getPublicUrl("/images/defaultAvatar.jpg");
 });
+
+async function logout() {
+  await apiLogout();
+  userStore.setUser(null);
+  router.push({ name: "login" });
+  ElMessage.success("退出登录成功");
+}
 </script>
 
 <style scoped lang="scss">
