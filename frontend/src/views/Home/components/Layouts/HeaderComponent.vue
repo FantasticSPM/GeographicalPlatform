@@ -21,8 +21,13 @@
       </el-menu>
     </div>
     <div class="right">
-      <el-button type="primary" size="small" @click="login">登录</el-button>
-      <el-button type="primary" size="small" @click="register">注册</el-button>
+      <div v-if="!userStore.user" class="btns">
+        <el-button type="primary" size="small" @click="login">登录</el-button>
+        <el-button type="primary" size="small" @click="register"
+          >注册</el-button
+        >
+      </div>
+      <UserCard v-else></UserCard>
     </div>
     <button
       class="mobile-toggle"
@@ -52,24 +57,36 @@
           <ArrowRight />
         </el-icon>
       </RouterLink>
-      <div class="mobile-menu__account">
+      <div class="mobile-menu__account" v-if="!userStore.user">
         <el-button type="primary" size="small" @click="login">登录</el-button>
         <el-button type="primary" size="small" @click="register"
           >注册</el-button
         >
+      </div>
+      <div v-else class="user">
+        <el-avatar :src="avatarUrl" />
+        <span>{{ userStore.user?.nick_name || "" }}</span>
       </div>
     </nav>
   </div>
 </template>
 
 <script setup>
-import { ref, watch } from "vue";
+import { computed, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import { useUserStore } from "@/stores/user";
+import { getPublicUrl } from "@/utils/common";
+import UserCard from "../common/UserCard.vue";
 const route = useRoute();
 const router = useRouter();
+const userStore = useUserStore();
 const activeIndex = ref(route.matched?.[1].path || route.path);
 const mobileMenuOpen = ref(false);
 const title = import.meta.env.VITE_TITLE;
+
+const avatarUrl = computed(() => {
+  return userStore.user?.avatar || getPublicUrl("/images/defaultAvatar.jpg");
+});
 
 const items = [
   { index: "/index", label: "门户首页" },
@@ -105,6 +122,8 @@ function register() {
     },
   });
 }
+
+userStore.getUser();
 </script>
 
 <style lang="scss" scoped>
@@ -227,12 +246,14 @@ function register() {
   }
 
   .right {
-    display: flex;
-    flex: 0 0 auto;
-    gap: 8px;
+    .btns {
+      display: flex;
+      flex: 0 0 auto;
+      gap: 8px;
 
-    .el-button + .el-button {
-      margin-left: 0;
+      .el-button + .el-button {
+        margin-left: 0;
+      }
     }
   }
 
@@ -370,6 +391,17 @@ function register() {
       margin-top: 8px;
       padding: 8px 4px 0;
       border-top: 1px solid #e7eef4;
+    }
+
+    .user {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 8px;
+      padding: 8px 4px 0;
+      border-top: 1px solid #e7eef4;
+      color: #000;
+      font-size: 12px;
     }
 
     .mobile-menu__account .el-button {
