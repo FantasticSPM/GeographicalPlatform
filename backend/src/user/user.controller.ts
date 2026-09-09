@@ -28,7 +28,8 @@ export class UserController {
   async me(
     @Req() request: AuthenticatedRequest,
   ): Promise<ApiResponse<UserProfile>> {
-    const data = await this.userService.findOne(request.user.id);
+    const data = await this.userService.findOne(String(request.user.id));
+    delete data.password;
     return ApiResponseFactory.success(data);
   }
 

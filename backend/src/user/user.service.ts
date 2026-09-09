@@ -1,14 +1,23 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { ChangePasswordDto } from './dto/change-password.dto.js';
 import { UpdateProfileDto } from './dto/update-profile.dto.js';
 import type { UserProfile } from '../common/interfaces/auth.interface.js';
+import { InjectRepository } from '@nestjs/typeorm';
+import { User } from './entities/user.entity.js';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class UserService {
-  findOne(_id: number | string): any {
-    return {
-      _id,
-    };
+  constructor(
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>,
+  ) {}
+  async findOne(_id: string): Promise<UserProfile> {
+    const user = await this.userRepository.findOneBy({ id: _id });
+    if (!user) {
+      throw new BadRequestException('用户不存在');
+    }
+    return user;
   }
 
   update(
