@@ -1,16 +1,24 @@
 <template>
-    <iframe :src="src" class="iframe-page" height="100%"></iframe>
+  <iframe :src="src" class="iframe-page" :height="height"></iframe>
 </template>
 
 <script setup>
-defineProps(['src'])
+defineProps({
+  src: {
+    type: String,
+    required: true,
+  },
+  height: {
+    type: String,
+    default: "100%",
+  },
+});
 </script>
 
 <style scoped lang="scss">
 .iframe-page {
-    width: 100%;
-    height: 100%;
-    border: none;
-    display: block;
+  width: 100%;
+  border: none;
+  display: block;
 }
 </style>

@@ -166,6 +166,7 @@
 <script setup>
 import { onMounted, reactive, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import { useUserStore } from "@/stores/user";
 import { ElMessage } from "element-plus";
 import {
   ArrowLeft,
@@ -182,6 +183,7 @@ import { apiLogin } from "@/apis/backend/auth";
 
 const route = useRoute();
 const router = useRouter();
+const userStore = useUserStore();
 const formRef = ref();
 const submitting = ref(false);
 const passwordVisible = ref(false);
@@ -230,6 +232,7 @@ async function handleSubmit() {
       password: form.password,
     });
     if (result?.success) {
+      userStore.setUser(result.data);
       ElMessage.success(result.msg || "登录成功，正在返回平台！");
       router.replace(getReturnLocation());
     } else {

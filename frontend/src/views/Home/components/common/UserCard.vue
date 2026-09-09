@@ -8,7 +8,14 @@
     <template #dropdown>
       <div class="user_dropdown_item">
         <div class="flex-between">
-          <div class="title">
+          <div
+            class="title"
+            @click="
+              $router.push({
+                name: 'user',
+              })
+            "
+          >
             <el-icon><Avatar /></el-icon>
             <span>账号</span>
             <el-icon><ArrowRight /></el-icon>
@@ -29,17 +36,6 @@
             <el-tag size="small" type="primary">个人账号</el-tag>
           </div>
         </div>
-      </div>
-
-      <div class="user_dropdown_item">
-        <div class="flex-between">
-          <div class="title">
-            <el-icon><Avatar /></el-icon>
-            <span>权限与安全</span>
-            <el-icon><ArrowRight /></el-icon>
-          </div>
-        </div>
-        <div>11111111</div>
       </div>
     </template>
 

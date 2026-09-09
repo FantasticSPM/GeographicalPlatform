@@ -4,6 +4,7 @@
       v-for="i in data"
       :message="i.content"
       :key="i.id"
+      @click="handleClick(i)"
     ></NewsAnnounce>
   </div>
 </template>
@@ -16,6 +17,11 @@ defineProps({
     default: () => [],
   },
 });
+
+const emits = defineEmits(["click"]);
+function handleClick(item) {
+  emits("click", item);
+}
 </script>
 
 <style scoped lang="scss">

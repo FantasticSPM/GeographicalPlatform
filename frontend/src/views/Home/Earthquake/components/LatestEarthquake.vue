@@ -25,9 +25,9 @@ defineProps({
   },
 });
 
-const emits = defineEmits(["clickItem"]);
+const emits = defineEmits(["click"]);
 async function handleDetailsClick(item) {
-  emits("clickItem", item);
+  emits("click", item);
 }
 </script>
 
