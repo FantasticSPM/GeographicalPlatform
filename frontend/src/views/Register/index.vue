@@ -249,7 +249,10 @@ const validateConfirmPassword = (_rule, value, callback) => {
 const rules = {
   username: [
     { required: true, message: "请输入账号", trigger: "blur" },
-    { min: 2, max: 30, message: "账号长度应为 2-30 个字符", trigger: "blur" },
+    {
+      pattern: /^[A-Za-z][A-Za-z0-9_]{3,9}$/,
+      message: "账号须为4-10位，包含字母、数字和下划线，且以英文字母开头。",
+    },
   ],
   email: [
     { required: true, message: "请输入邮箱", trigger: "blur" },
@@ -261,7 +264,10 @@ const rules = {
   ],
   password: [
     { required: true, message: "请输入密码", trigger: "blur" },
-    { min: 6, max: 30, message: "密码长度应为 6-30 位", trigger: "blur" },
+    {
+      pattern: /^(?=.*[A-Za-z])[A-Za-z0-9_]{8,16}$/,
+      message: "密码须为8-16位，包含字母、数字、下划线，且至少含一个字母！",
+    },
   ],
   confirmPassword: [
     { validator: validateConfirmPassword, trigger: ["blur", "change"] },

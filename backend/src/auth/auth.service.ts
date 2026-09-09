@@ -41,9 +41,23 @@ export class AuthService {
       throw new BadRequestException('用户名不能为空!');
     }
 
+    const usernameReg = /^[A-Za-z][A-Za-z0-9_]{3,9}$/;
+    if (!usernameReg.test(_createAuthDto.username)) {
+      throw new BadRequestException(
+        '账号必须为 4～10 位，只能包含英文字母、数字和下划线，且必须以英文字母开头。',
+      );
+    }
+
     // 判断是否有密码
     if (!define(_createAuthDto.password)) {
       throw new BadRequestException('密码不能为空!');
+    }
+
+    const passwordReg = /^(?=.*[A-Za-z])[A-Za-z0-9_]{8,16}$/;
+    if (!passwordReg.test(_createAuthDto.password)) {
+      throw new BadRequestException(
+        '密码需要包含 8～16 位的字母、数字、下划线，并且必须至少包含一个字母！',
+      );
     }
 
     // 判断是否有昵称
@@ -158,6 +172,11 @@ export class AuthService {
     });
 
     await this.authRepository.save(newSession);
+
+    // 更新用户表的登录时间
+    await this.userRepository.update(+user.id, {
+      last_login_at: new Date(),
+    });
 
     const data: UserProfile = {
       ...user,
