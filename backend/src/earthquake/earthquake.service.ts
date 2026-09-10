@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateEarthquakeDto } from './dto/create-earthquake.dto.js';
 import { UpdateEarthquakeDto } from './dto/update-earthquake.dto.js';
+import { generateUniqueId } from '../common/tools/index.js';
 import axios from 'axios';
 import * as cheerio from 'cheerio';
 
@@ -22,6 +23,11 @@ interface listCache {
 }
 
 const listCache: listCache = {
+  data: null,
+  time: 0,
+};
+
+const newsListCache: listCache = {
   data: null,
   time: 0,
 };
@@ -81,6 +87,32 @@ export class EarthquakeService {
     }
 
     const data = await getDataByIsExpire(listCache, getData);
+    return data;
+  }
+
+  async findAllNews() {
+    async function getData() {
+      const baseUrl = 'https://data.earthquake.cn/gxdt/index.html';
+      const result = await axios.get(baseUrl);
+
+      const $ = cheerio.load(result.data);
+      const data: object[] = [];
+      $('.standard_right ul.origin_ul li').each((_, el) => {
+        const a = $(el).find('a');
+        const span = $(el).find('span');
+        const content = a.find('font');
+
+        data.push({
+          id: generateUniqueId(),
+          link: new URL(a.attr('href') ?? '', baseUrl).href,
+          time: span.text(),
+          content: content.text(),
+        });
+      });
+      return data;
+    }
+
+    const data = await getDataByIsExpire(newsListCache, getData);
     return data;
   }
 

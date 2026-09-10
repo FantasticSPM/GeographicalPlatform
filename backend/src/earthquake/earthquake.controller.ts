@@ -20,17 +20,17 @@ export class EarthquakeController {
     return this.earthquakeService.create(createEarthquakeDto);
   }
 
-  @Get()
+  @Get('list')
   findAll() {
     return this.earthquakeService.findAll();
   }
 
-  @Get(':id')
+  @Get('list:id')
   findOne(@Param('id') id: string) {
     return this.earthquakeService.findOne(id);
   }
 
-  @Patch(':id')
+  @Patch('list:id')
   update(
     @Param('id') id: string,
     @Body() updateEarthquakeDto: UpdateEarthquakeDto,
@@ -38,8 +38,13 @@ export class EarthquakeController {
     return this.earthquakeService.update(+id, updateEarthquakeDto);
   }
 
-  @Delete(':id')
+  @Delete('list:id')
   remove(@Param('id') id: string) {
     return this.earthquakeService.remove(+id);
+  }
+
+  @Get('news')
+  findAllNews() {
+    return this.earthquakeService.findAllNews();
   }
 }
