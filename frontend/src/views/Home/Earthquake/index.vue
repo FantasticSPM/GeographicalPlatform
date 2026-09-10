@@ -1,11 +1,7 @@
 <template>
   <div class="earthquake-container">
     <Map3D></Map3D>
-    <EarthquakeNews
-      :data="earthquakeList.slice(0, 1)"
-      @click="handleNewsClick"
-      v-if="earthquakeList.length"
-    ></EarthquakeNews>
+    <EarthquakeNews></EarthquakeNews>
     <LatestEarthquake
       :data="earthquakeList"
       @click="handleClick"
@@ -15,13 +11,6 @@
       v-if="isShowDetail"
       @close="handleDetailsClose"
     ></EarthquakeDetails>
-
-    <el-dialog title="" width="1500px" v-model="isShowDialog" top="5vh">
-      <IframePage
-        height="800px"
-        src="https://data.earthquake.cn/gxdt/info/2026/334675334.html"
-      ></IframePage>
-    </el-dialog>
   </div>
 </template>
 
@@ -35,7 +24,6 @@ import EarthquakeNews from "./components/EarthquakeNews.vue";
 import EarthquakeDetails from "./components/EarthquakeDetails.vue";
 import LatestEarthquake from "./components/LatestEarthquake.vue";
 
-import IframePage from "@/components/IframePage.vue";
 import { addBillboards, removeBillboards } from "@/utils/viewer.js";
 
 // 获取地震数据
@@ -65,12 +53,6 @@ function handleClick(data) {
   billboardInfo = addBillboards(window.viewer, data);
   isShowDetail.value = true;
   details.value = data;
-}
-
-const isShowDialog = ref(false);
-function handleNewsClick(data) {
-  console.log(data);
-  isShowDialog.value = true;
 }
 
 function handleDetailsClose() {

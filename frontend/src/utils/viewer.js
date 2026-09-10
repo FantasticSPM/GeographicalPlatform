@@ -1,12 +1,13 @@
 import * as Cesium from "cesium";
 import { getPublicUrl } from "./common";
+import defaultImage from "@/assets/image/earthquake.png?inline";
 
 const billboards = new Map();
 export function addBillboards(
   viewer,
   data,
   style = {
-    image: getPublicUrl("/images/earthquake.png"),
+    image: defaultImage,
     scale: 0.2,
   },
   id = Cesium.createGuid(),

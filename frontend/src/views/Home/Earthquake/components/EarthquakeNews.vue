@@ -7,21 +7,42 @@
       @click="handleClick(i)"
     ></NewsAnnounce>
   </div>
+  <el-dialog
+    title="新闻详情"
+    width="1500px"
+    v-model="isShowDialog"
+    top="5vh"
+    v-if="isShowDialog"
+  >
+    <IframePage height="800px" :src="details.link"></IframePage>
+  </el-dialog>
 </template>
 
 <script setup>
+import { ref } from "vue";
 import NewsAnnounce from "./NewsAnnounce.vue";
-defineProps({
-  data: {
-    type: Array,
-    default: () => [],
-  },
-});
+import IframePage from "@/components/IframePage.vue";
+import { apiGetEarthquakeNewsList } from "@/apis/backend/earthquake.js";
+import { ElMessage } from "element-plus";
 
-const emits = defineEmits(["click"]);
-function handleClick(item) {
-  emits("click", item);
+const isShowDialog = ref(false);
+const details = ref({});
+function handleClick(data) {
+  isShowDialog.value = true;
+  details.value = data;
 }
+
+const data = ref([]);
+async function getNews() {
+  const result = await apiGetEarthquakeNewsList();
+  if (result?.success) {
+    data.value = result.data.slice(0, 1);
+  } else {
+    ElMessage.error(result?.msg ?? "获取新闻失败");
+  }
+}
+
+getNews();
 </script>
 
 <style scoped lang="scss">
