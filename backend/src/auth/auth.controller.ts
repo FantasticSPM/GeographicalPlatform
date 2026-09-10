@@ -15,11 +15,7 @@ import { CreateAuthDto } from './dto/create-auth.dto.js';
 import { LoginDto } from './dto/login.dto.js';
 import { RefreshTokenDto } from './dto/refresh-token.dto.js';
 import { LogoutDto } from './dto/logout.dto.js';
-import type {
-  AuthenticatedRequest,
-  AuthTokens,
-  UserProfile,
-} from '../common/interfaces/auth.interface.js';
+import type { UserProfile } from '../common/interfaces/auth.interface.js';
 import type { ApiResponse } from '../common/interfaces/api-response.interface.js';
 import type { Request, Response as ExpressResponse } from 'express';
 import { AccessTokenGuard } from './guards/access-token.guard.js';

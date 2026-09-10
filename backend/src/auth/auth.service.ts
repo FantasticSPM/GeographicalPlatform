@@ -7,10 +7,7 @@ import { CreateAuthDto } from './dto/create-auth.dto.js';
 import { LoginDto } from './dto/login.dto.js';
 import { RefreshTokenDto } from './dto/refresh-token.dto.js';
 import { LogoutDto } from './dto/logout.dto.js';
-import type {
-  AuthTokens,
-  UserProfile,
-} from '../common/interfaces/auth.interface.js';
+import type { UserProfile } from '../common/interfaces/auth.interface.js';
 import {
   generateRandomNickname,
   define,
@@ -187,7 +184,7 @@ export class AuthService {
     return data;
   }
 
-  refresh(_refreshTokenDto: RefreshTokenDto): Promise<AuthTokens> {
+  refresh(_refreshTokenDto: RefreshTokenDto): Promise<any> {
     throw new Error('AuthService.refresh is not implemented');
   }
 
