@@ -6,11 +6,14 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { EarthquakeService } from './earthquake.service.ts';
 import { CreateEarthquakeDto } from './dto/create-earthquake.dto.ts';
 import { UpdateEarthquakeDto } from './dto/update-earthquake.dto.ts';
+import { AccessTokenGuard } from '../auth/guards/access-token.guard.ts';
 
+@UseGuards(AccessTokenGuard)
 @Controller('earthquake')
 export class EarthquakeController {
   constructor(private readonly earthquakeService: EarthquakeService) {}
