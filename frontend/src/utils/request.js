@@ -45,6 +45,23 @@ instance.interceptors.response.use(
     }
   },
   function (error) {
+    const { status, response } = error;
+    switch (status) {
+      case 200:
+        break;
+      case 401:
+        ElMessage.error(response?.data?.msg || "登录过期，请重新登录");
+        const route = router.currentRoute.value;
+        router.push({
+          name: "login",
+          query: {
+            url: route.name !== "login" ? route.fullPath : "",
+          },
+        });
+        break;
+      default:
+        break;
+    }
     // 超出 2xx 范围的状态码都会触发该函数。
     // 对响应错误做点什么
     return Promise.reject(error);
