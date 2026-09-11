@@ -3,7 +3,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller.js';
 import { AppService } from './app.service.js';
 import { EarthquakeModule } from './earthquake/earthquake.module.js';
-import { UserModule } from './user/user.module.js';
 import { AuthModule } from './auth/auth.module.js';
 
 @Module({
@@ -19,7 +18,6 @@ import { AuthModule } from './auth/auth.module.js';
       synchronize: true, //自动同步数据库
     }),
     EarthquakeModule,
-    UserModule,
     AuthModule,
   ],
   controllers: [AppController],

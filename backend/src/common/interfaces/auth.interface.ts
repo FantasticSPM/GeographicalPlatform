@@ -1,5 +1,5 @@
 export interface UserProfile {
-  id: number | string;
+  id: number;
   username: string;
   password?: string;
   nick_name?: string;

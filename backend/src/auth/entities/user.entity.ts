@@ -1,4 +1,10 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity()
 export class User {
@@ -27,18 +33,12 @@ export class User {
   })
   avatar: string;
 
-  @Column({
-    nullable: true,
-    comment: '最近一次登录时间',
-  })
-  last_login_at: Date;
-
-  @Column({
+  @CreateDateColumn({
     comment: '创建时间',
   })
   created_at: Date;
 
-  @Column({
+  @UpdateDateColumn({
     comment: '更新时间',
   })
   updated_at: Date;

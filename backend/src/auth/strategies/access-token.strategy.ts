@@ -2,7 +2,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import type { Request } from 'express';
-import { SECRET_KEY } from '../../constant/index.js';
+import { ACCESS_TOKEN_SECRET_KEY } from '../../constant/index.js';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Auth } from '../entities/auth.entity.js';
@@ -24,7 +24,7 @@ export class AccessTokenStrategy extends PassportStrategy(Strategy) {
         (request: Request) => request.cookies?.access_token,
         ExtractJwt.fromAuthHeaderAsBearerToken(),
       ]),
-      secretOrKey: SECRET_KEY,
+      secretOrKey: ACCESS_TOKEN_SECRET_KEY,
     });
   }
 
