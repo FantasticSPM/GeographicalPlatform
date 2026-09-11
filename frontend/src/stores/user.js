@@ -1,6 +1,6 @@
 import { ref, computed } from "vue";
 import { defineStore } from "pinia";
-import { apiGetUserInfo } from "@/apis/backend/user";
+import { apiGetUserInfo } from "@/apis/backend/auth";
 import { ElMessage } from "element-plus";
 
 export const useUserStore = defineStore("user", () => {

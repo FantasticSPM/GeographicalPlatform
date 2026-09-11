@@ -25,3 +25,11 @@ export function apiLogout() {
     method: "post",
   });
 }
+
+// 获取个人信息
+export function apiGetUserInfo() {
+  return request({
+    url: "/auth/me",
+    method: "get",
+  });
+}
