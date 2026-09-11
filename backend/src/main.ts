@@ -6,6 +6,7 @@ import cookieParser from 'cookie-parser';
 
 import { CustomGlobeExceptionFilter } from './common/filters/globe-exception-filter.js';
 import { ResponseInterceptor } from './common/interceptors/response.interceptor.js';
+import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {});
@@ -28,6 +29,9 @@ async function bootstrap() {
 
   // 全局响应拦截器
   app.useGlobalInterceptors(new ResponseInterceptor());
+
+  // 全局验证管道
+  app.useGlobalPipes(new ValidationPipe());
 
   await app.listen(process.env.PORT ?? 3000);
 }

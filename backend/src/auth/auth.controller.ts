@@ -33,30 +33,6 @@ export class AuthController {
 
   @Post('register')
   async register(@Body() createAuthDto: RegisterAuthDto): Promise<any> {
-    // 判断是否有用户名
-    if (!define(createAuthDto.username)) {
-      throw new BadRequestException('用户名不能为空!');
-    }
-
-    const usernameReg = /^[A-Za-z][A-Za-z0-9_]{3,9}$/;
-    if (!usernameReg.test(createAuthDto.username)) {
-      throw new BadRequestException(
-        '账号必须为 4～10 位，只能包含英文字母、数字和下划线，且必须以英文字母开头。',
-      );
-    }
-
-    // 判断是否有密码
-    if (!define(createAuthDto.password)) {
-      throw new BadRequestException('密码不能为空!');
-    }
-
-    const passwordReg = /^(?=.*[A-Za-z])[A-Za-z0-9_]{8,16}$/;
-    if (!passwordReg.test(createAuthDto.password)) {
-      throw new BadRequestException(
-        '密码需要包含 8～16 位的字母、数字、下划线，并且必须至少包含一个字母！',
-      );
-    }
-
     // 判断是否有昵称
     if (!define(createAuthDto.nick_name)) {
       createAuthDto.nick_name = generateRandomNickname();
@@ -89,12 +65,6 @@ export class AuthController {
     @Res({ passthrough: true }) response: ExpressResponse,
     @Body() loginDto: LoginDto,
   ): Promise<any> {
-    if (!define(loginDto.username)) {
-      throw new BadRequestException('用户名不能为空!');
-    }
-    if (!define(loginDto.password)) {
-      throw new BadRequestException('密码不能为空!');
-    }
     const user = await this.userService.findOneByUserName(loginDto.username);
     if (!user) {
       throw new BadRequestException('用户不存在!');
@@ -214,6 +184,18 @@ export class AuthController {
   ): Promise<any> {
     const refreshToken = request.cookies['refresh_token'];
     await this.authService.logoutAll(refreshToken);
+    response.clearCookie('access_token', {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 15 * 60 * 1000,
+    });
+    response.clearCookie('refresh_token', {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
     return null;
   }
 

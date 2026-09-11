@@ -9,8 +9,11 @@ export class CustomGlobeExceptionFilter implements ExceptionFilter {
     let message = exception.response;
     if (exception.response?.message) {
       message = exception.response.message;
+      if (Array.isArray(message) && message.length === 1) {
+        message = message[0];
+      }
     }
-    response.status(200).json({
+    response.status(statusCode).json({
       code: statusCode,
       msg: message,
       data: null,
