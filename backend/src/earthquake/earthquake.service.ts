@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { CreateEarthquakeDto } from './dto/create-earthquake.dto.js';
-import { UpdateEarthquakeDto } from './dto/update-earthquake.dto.js';
-import { generateUniqueId } from '../common/tools/index.js';
+import { CreateEarthquakeDto } from './dto/create-earthquake.dto.ts';
+import { UpdateEarthquakeDto } from './dto/update-earthquake.dto.ts';
+import { generateUniqueId } from '../common/tools/index.ts';
 import axios from 'axios';
 import * as cheerio from 'cheerio';
 

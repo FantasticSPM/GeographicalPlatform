@@ -11,18 +11,18 @@ import {
   UseGuards,
   BadRequestException,
 } from '@nestjs/common';
-import { AuthService } from './services/auth.service.js';
-import { RegisterAuthDto } from './dto/register.dto.js';
-import { LoginDto } from './dto/login.dto.js';
+import { AuthService } from './services/auth.service.ts';
+import { RegisterAuthDto } from './dto/register.dto.ts';
+import { LoginDto } from './dto/login.dto.ts';
 import type {
   Request as ExpressRequest,
   Response as ExpressResponse,
 } from 'express';
-import { AccessTokenGuard } from './guards/access-token.guard.js';
-import { define, generateRandomNickname } from '../common/tools/index.js';
-import { UserService } from './services/user.service.js';
+import { AccessTokenGuard } from './guards/access-token.guard.ts';
+import { define, generateRandomNickname } from '../common/tools/index.ts';
+import { UserService } from './services/user.service.ts';
 import bcrypt from 'bcrypt';
-import type { AuthenticatedRequest } from '../common/interfaces/auth.interface.js';
+import type { AuthenticatedRequest } from '../common/interfaces/auth.interface.ts';
 
 @Controller('auth')
 export class AuthController {

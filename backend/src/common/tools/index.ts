@@ -1,2 +1,2 @@
-export * from './nickname.js';
-export * from './tool.js';
+export * from './nickname.ts';
+export * from './tool.ts';

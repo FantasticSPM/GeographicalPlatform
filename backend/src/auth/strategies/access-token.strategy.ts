@@ -2,10 +2,10 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import type { Request } from 'express';
-import { ACCESS_TOKEN_SECRET_KEY } from '../../constant/index.js';
+import { ACCESS_TOKEN_SECRET_KEY } from '../../constant/index.ts';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Auth } from '../entities/auth.entity.js';
+import { Auth } from '../entities/auth.entity.ts';
 
 type AccessTokenPayload = {
   userId: number | string;

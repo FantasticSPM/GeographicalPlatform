@@ -1,15 +1,15 @@
 import { Module } from '@nestjs/common';
-import { AuthService } from './services/auth.service.js';
-import { AuthController } from './auth.controller.js';
+import { AuthService } from './services/auth.service.ts';
+import { AuthController } from './auth.controller.ts';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Auth } from './entities/auth.entity.js';
-import { User } from './entities/user.entity.js';
+import { Auth } from './entities/auth.entity.ts';
+import { User } from './entities/user.entity.ts';
 import { JwtModule } from '@nestjs/jwt';
-import { SECRET_KEY_BACKEND } from '../constant/index.js';
+import { SECRET_KEY_BACKEND } from '../constant/index.ts';
 import { PassportModule } from '@nestjs/passport';
-import { AccessTokenGuard } from './guards/access-token.guard.js';
-import { AccessTokenStrategy } from './strategies/access-token.strategy.js';
-import { UserService } from './services/user.service.js';
+import { AccessTokenGuard } from './guards/access-token.guard.ts';
+import { AccessTokenStrategy } from './strategies/access-token.strategy.ts';
+import { UserService } from './services/user.service.ts';
 
 @Module({
   imports: [

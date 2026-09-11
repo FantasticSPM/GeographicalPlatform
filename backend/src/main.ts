@@ -1,11 +1,11 @@
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'node:path';
-import { AppModule } from './app.module.js';
+import { AppModule } from './app.module.ts';
 import cookieParser from 'cookie-parser';
 
-import { CustomGlobeExceptionFilter } from './common/filters/globe-exception-filter.js';
-import { ResponseInterceptor } from './common/interceptors/response.interceptor.js';
+import { CustomGlobeExceptionFilter } from './common/filters/globe-exception-filter.ts';
+import { ResponseInterceptor } from './common/interceptors/response.interceptor.ts';
 import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {

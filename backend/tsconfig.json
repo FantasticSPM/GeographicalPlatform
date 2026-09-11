@@ -18,9 +18,7 @@
     "strict": true,
     "noImplicitAny": false,
     "strictPropertyInitialization": false,
-    "types": [
-      "vitest/globals",
-      "node"
-    ]
+    "rewriteRelativeImportExtensions": true,
+    "types": ["vitest/globals", "node"]
   }
 }

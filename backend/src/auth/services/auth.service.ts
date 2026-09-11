@@ -1,15 +1,15 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { RefreshTokenDto } from '../dto/refresh-token.dto.js';
+import { RefreshTokenDto } from '../dto/refresh-token.dto.ts';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Auth } from '../entities/auth.entity.js';
+import { Auth } from '../entities/auth.entity.ts';
 import { JwtService } from '@nestjs/jwt';
 import { createHash } from 'crypto';
-import { UserService } from './user.service.js';
+import { UserService } from './user.service.ts';
 import {
   ACCESS_TOKEN_SECRET_KEY,
   REFRESH_ACCESS_TOKEN_SECRET_KEY,
-} from '../../constant/index.js';
+} from '../../constant/index.ts';
 
 @Injectable()
 export class AuthService {

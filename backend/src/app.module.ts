@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AppController } from './app.controller.js';
-import { AppService } from './app.service.js';
-import { EarthquakeModule } from './earthquake/earthquake.module.js';
-import { AuthModule } from './auth/auth.module.js';
-import { TestModule } from './test/test.module.js';
+import { AppController } from './app.controller.ts';
+import { AppService } from './app.service.ts';
+import { EarthquakeModule } from './earthquake/earthquake.module.ts';
+import { AuthModule } from './auth/auth.module.ts';
+import { TestModule } from './test/test.module.ts';
 
 @Module({
   imports: [

@@ -7,9 +7,9 @@ import {
   Param,
   Delete,
 } from '@nestjs/common';
-import { EarthquakeService } from './earthquake.service.js';
-import { CreateEarthquakeDto } from './dto/create-earthquake.dto.js';
-import { UpdateEarthquakeDto } from './dto/update-earthquake.dto.js';
+import { EarthquakeService } from './earthquake.service.ts';
+import { CreateEarthquakeDto } from './dto/create-earthquake.dto.ts';
+import { UpdateEarthquakeDto } from './dto/update-earthquake.dto.ts';
 
 @Controller('earthquake')
 export class EarthquakeController {
