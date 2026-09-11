@@ -26,6 +26,19 @@ export function apiLogout() {
   });
 }
 
+// 刷新token
+export function apiRefreshToken() {
+  return request({
+    url: "/auth/refresh",
+    method: "post",
+    __isRefreshToken: true,
+  });
+}
+
+export function isFreshToken(config) {
+  return !!config.__isRefreshToken;
+}
+
 // 获取个人信息
 export function apiGetUserInfo() {
   return request({

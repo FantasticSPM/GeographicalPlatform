@@ -116,7 +116,7 @@ export class AuthController {
     return user;
   }
 
-  @Get('refresh')
+  @Post('refresh')
   @HttpCode(HttpStatus.OK)
   async refresh(
     @Req() req: ExpressRequest,
@@ -172,7 +172,7 @@ export class AuthController {
     return null;
   }
 
-  @Get('logoutAll')
+  @Post('logoutAll')
   @HttpCode(HttpStatus.OK)
   @UseGuards(AccessTokenGuard)
   async logoutAll(
