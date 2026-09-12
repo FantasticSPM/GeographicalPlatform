@@ -144,13 +144,5 @@ export class AuthService {
       .andWhere('revoked_at IS NULL')
       .andWhere('expires_at > :now', { now: revoked_at })
       .execute();
-    // await this.authRepository.updateAll(
-    //   {
-    //     revoked_at: new Date(),
-    //   },
-    //   {
-    //     id: session.user_id,
-    //   },
-    // );
   }
 }

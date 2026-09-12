@@ -10,6 +10,7 @@ import { PassportModule } from '@nestjs/passport';
 import { AccessTokenGuard } from './guards/access-token.guard.ts';
 import { AccessTokenStrategy } from './strategies/access-token.strategy.ts';
 import { UserService } from './services/user.service.ts';
+import { UtilsModule } from '../utils/utils.module.ts';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { UserService } from './services/user.service.ts';
         expiresIn: '15d',
       },
     }),
+    UtilsModule,
   ],
   controllers: [AuthController],
   providers: [AuthService, UserService, AccessTokenStrategy, AccessTokenGuard],

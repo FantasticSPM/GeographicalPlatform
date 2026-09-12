@@ -33,6 +33,12 @@ export class User {
   })
   avatar: string;
 
+  @Column({
+    nullable: true,
+    comment: '邮箱',
+  })
+  email: string;
+
   @CreateDateColumn({
     comment: '创建时间',
   })

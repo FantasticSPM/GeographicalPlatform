@@ -7,6 +7,7 @@ import {
   Body,
   Req,
   Res,
+  Headers,
   Ip,
   UseGuards,
   BadRequestException,
@@ -23,12 +24,14 @@ import { define, generateRandomNickname } from '../common/tools/index.ts';
 import { UserService } from './services/user.service.ts';
 import bcrypt from 'bcrypt';
 import type { AuthenticatedRequest } from '../common/interfaces/auth.interface.ts';
+import { UtilsService } from '../utils/utils.service.ts';
 
 @Controller('auth')
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
     private readonly userService: UserService,
+    private readonly utilsService: UtilsService,
   ) {}
 
   @Post('register')
@@ -62,6 +65,7 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   async login(
     @Ip() ip: string,
+    @Headers('user-agent') userAgent: string,
     @Res({ passthrough: true }) response: ExpressResponse,
     @Body() loginDto: LoginDto,
   ): Promise<any> {
@@ -77,12 +81,14 @@ export class AuthController {
 
     const currentDate = new Date();
     const expiresAt = new Date(+currentDate + 1000 * 60 * 60 * 24 * 7);
+    const deviceInfo = this.utilsService.getDeviceInfo(userAgent);
 
     const session = await this.authService.create({
       user_id: user.id,
       ip_address: _ip,
       expires_at: expiresAt,
       last_login_at: currentDate,
+      device: deviceInfo,
     });
 
     const { access_token, refresh_token } =

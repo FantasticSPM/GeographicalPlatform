@@ -28,6 +28,12 @@ export class Auth {
   ip_address: string;
 
   @Column({
+    comment: '登录时的设备信息',
+    nullable: true,
+  })
+  device: string;
+
+  @Column({
     comment: '过期时间',
   })
   expires_at: Date;
