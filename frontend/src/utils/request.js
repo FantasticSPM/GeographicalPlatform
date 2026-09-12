@@ -25,46 +25,61 @@ let isRefreshing = false;
 const requestsQueue = [];
 // 添加响应拦截器
 instance.interceptors.response.use(
-  (response) => response.data,
+  async (response) => {
+    const { config } = response;
+    const data = response.data;
+
+    if (!data || data.code !== 401 || config._retry) {
+      return Promise.resolve(data);
+    }
+
+    return handle401(data, config);
+  },
   async function (error) {
-    const { config, response } = error;
+    const { response } = error;
+    const { config } = response;
+    const data = response.data;
 
     if (!response || response.status !== 401 || config._retry) {
       return Promise.reject(error);
     }
-    if (isFreshToken(config)) {
-      logout(response?.data?.msg);
-      return Promise.reject(error);
-    }
-    if (isRefreshing) {
-      return new Promise((resolve) => {
-        requestsQueue.push(() => {
-          config._retry = true;
-          resolve(instance(config));
-        });
-      });
-    }
 
-    isRefreshing = true;
-    config._retry = true;
-
-    try {
-      await apiRefreshToken();
-      requestsQueue.forEach((cb) => cb());
-      requestsQueue.length = 0;
-      return instance(config);
-    } catch (err) {
-      requestsQueue.length = 0;
-      logout();
-      return Promise.reject(err);
-    } finally {
-      isRefreshing = false;
-    }
+    return handle401(data, config);
   },
 );
 
-function logout(msg) {
-  ElMessage.error(msg || "登录过期，请重新登录");
+async function handle401(data, config) {
+  if (isFreshToken(config)) {
+    logout();
+    return Promise.resolve(data);
+  }
+  if (isRefreshing) {
+    return new Promise((resolve) => {
+      requestsQueue.push(() => {
+        config._retry = true;
+        resolve(instance(config));
+      });
+    });
+  }
+  isRefreshing = true;
+  config._retry = true;
+
+  try {
+    await apiRefreshToken();
+    requestsQueue.forEach((cb) => cb());
+    requestsQueue.length = 0;
+    return instance(config);
+  } catch (err) {
+    requestsQueue.length = 0;
+    logout();
+    return Promise.resolve(err);
+  } finally {
+    isRefreshing = false;
+  }
+}
+
+function logout() {
+  ElMessage.error("登录过期，请重新登录");
   const route = router.currentRoute.value;
   router.push({
     name: "login",

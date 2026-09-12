@@ -11,8 +11,6 @@ export const useUserStore = defineStore("user", () => {
     if (result?.success) {
       user.value = result.data;
       return result.data;
-    } else {
-      ElMessage.error(result?.msg || "获取用户信息失败");
     }
   }
 
