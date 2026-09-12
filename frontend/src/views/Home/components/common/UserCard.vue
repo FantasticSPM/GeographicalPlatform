@@ -43,7 +43,6 @@
       <el-avatar :src="avatarUrl" />
       <span>{{ userStore.user?.nick_name || "" }}</span>
     </div>
-    >
   </el-dropdown>
 </template>
 
