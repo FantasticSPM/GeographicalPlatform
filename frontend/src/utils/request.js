@@ -163,8 +163,9 @@ async function handle401(data, config) {
 
   try {
     await apiRefreshToken();
+    const request = instance(config);
     flushRequests();
-    return instance(config);
+    return request;
   } catch {
     // 刷新请求失败时，统一阻止所有后续请求并结束等待队列。
     return Promise.reject(expireSession());
