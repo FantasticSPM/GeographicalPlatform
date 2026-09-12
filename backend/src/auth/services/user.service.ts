@@ -9,18 +9,15 @@ export class UserService {
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
   ) {}
-  async findOneById(_id: string): Promise<any> {
-    const user = await this.userRepository.findOneBy({ id: _id });
-    return user;
+  findOneById(_id: string): Promise<any> {
+    return this.userRepository.findOneBy({ id: _id });
   }
 
-  async findOneByUserName(_username: string): Promise<any> {
-    const user = await this.userRepository.findOneBy({ username: _username });
-    return user;
+  findOneByUserName(_username: string): Promise<any> {
+    return this.userRepository.findOneBy({ username: _username });
   }
 
-  async create(createUserDto: any): Promise<any> {
-    const user = await this.userRepository.save(createUserDto);
-    return user;
+  create(createUserDto: any): Promise<any> {
+    return this.userRepository.save(createUserDto);
   }
 }

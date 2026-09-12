@@ -12,6 +12,7 @@ import {
   UseGuards,
   BadRequestException,
 } from '@nestjs/common';
+import { QueryFailedError } from 'typeorm';
 import { AuthService } from './services/auth.service.ts';
 import { RegisterAuthDto } from './dto/register.dto.ts';
 import { LoginDto } from './dto/login.dto.ts';
@@ -51,11 +52,19 @@ export class AuthController {
     }
     const passwordHash = await bcrypt.hash(createAuthDto.password, 12);
 
-    // 创建用户
-    const newUser = await this.userService.create({
-      ...createAuthDto,
-      password: passwordHash,
-    });
+    // 创建用户。预查询只能优化正常场景，不能解决并发竞态；最终以数据库唯一约束为准。
+    let newUser;
+    try {
+      newUser = await this.userService.create({
+        ...createAuthDto,
+        password: passwordHash,
+      });
+    } catch (error) {
+      if (isUsernameUniqueViolation(error)) {
+        throw new BadRequestException('用户名已存在!');
+      }
+      throw error;
+    }
 
     delete newUser.password;
     return newUser;
@@ -213,4 +222,19 @@ export class AuthController {
     delete data.password;
     return data;
   }
+}
+
+function isUsernameUniqueViolation(error: unknown): boolean {
+  if (!(error instanceof QueryFailedError)) return false;
+
+  const driverError = error.driverError as {
+    code?: string;
+    detail?: string;
+  };
+
+  // PostgreSQL duplicate key 错误码为 23505。当前 User 实体中唯一字段是 username。
+  return (
+    driverError.code === '23505' &&
+    (driverError.detail?.includes('(username)') ?? false)
+  );
 }

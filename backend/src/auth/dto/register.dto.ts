@@ -34,7 +34,7 @@ export class RegisterAuthDto {
   @IsOptional()
   avatar?: string;
 
-  // @IsOptional()
+  @IsOptional()
   @IsEmail(undefined, {
     message: '邮箱格式不正确',
   })
