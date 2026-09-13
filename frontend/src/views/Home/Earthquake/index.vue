@@ -24,7 +24,7 @@ import { apiGetEarthquakeList } from "@/apis/backend/earthquake";
 import EarthquakeNews from "./components/EarthquakeNews.vue";
 import EarthquakeDetails from "./components/EarthquakeDetails.vue";
 import LatestEarthquake from "./components/LatestEarthquake.vue";
-import AdministrativeOutline from "./components/AdministrativeOutline.vue";
+import AdministrativeOutline from "@/components/map/Map3D/AdministrativeOutline.vue";
 
 import * as Cesium from "cesium";
 import {
@@ -32,6 +32,8 @@ import {
   addLabels,
   removeBillboards,
   removeLabels,
+  createCircle,
+  removeCircle,
 } from "@/utils/viewer.js";
 
 // 获取地震数据
@@ -56,9 +58,11 @@ const isShowDetail = ref(false);
 const details = ref({});
 
 const id = "earthquake";
+const circleId = "earthquake-circle";
 function handleClick(data) {
   removeBillboards(window.viewer, id);
   removeLabels(window.viewer, id);
+  removeCircle(window.viewer, circleId);
   addBillboards(
     window.viewer,
     data,
@@ -70,6 +74,13 @@ function handleClick(data) {
     id,
   );
 
+  createCircle(window.viewer, data, {
+    id: circleId,
+    // 地震没有自带影响半径，默认使用 50 km 的最大扩散范围。
+    maxRadius: data.depth * 100 ?? 50000,
+    ringCount: 3,
+    duration: 2800,
+  });
   addLabels(
     window.viewer,
     data,
@@ -89,6 +100,7 @@ function handleDetailsClose() {
   isShowDetail.value = false;
   removeBillboards(window.viewer, id);
   removeLabels(window.viewer, id);
+  removeCircle(window.viewer, circleId);
 }
 
 onBeforeUnmount(() => {

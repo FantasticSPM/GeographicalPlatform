@@ -13,10 +13,9 @@
 import * as Cesium from "cesium";
 import { polygonToLine } from "@turf/turf";
 import chinaData from "@/assets/data/china.json";
-console.log(chinaData);
 
 const outline = polygonToLine(chinaData.features[0]);
-console.log(outline);
+
 import { ref } from "vue";
 const value = ref(false);
 
