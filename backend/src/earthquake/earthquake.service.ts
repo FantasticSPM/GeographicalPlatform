@@ -12,7 +12,7 @@ type EarthquakeItem = {
   detailTime: string | undefined;
   longitude: number | string;
   latitude: number | string;
-  depth: string;
+  depth: number | string;
   magnitude: number | string;
   location: string;
 };
@@ -65,7 +65,7 @@ export class EarthquakeService {
         const second = date.getSeconds(); // 秒
         const longitude = +tds.eq(2).text();
         const latitude = +tds.eq(3).text();
-        const depth = tds.eq(4).text();
+        const depth = +tds.eq(4).text();
         const magnitude = +tds.eq(5).text();
         const location = tds.eq(6).text();
 
