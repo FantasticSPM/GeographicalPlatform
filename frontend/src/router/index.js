@@ -43,6 +43,11 @@ const router = createRouter({
           component: () => import("@/views/Home/Earthquake/index.vue"),
         },
         {
+          path: "position",
+          name: "position",
+          component: () => import("@/views/Home/Position/index.vue"),
+        },
+        {
           path: "weather",
           name: "weather",
           component: () => import("@/views/Home/Weather/index.vue"),
