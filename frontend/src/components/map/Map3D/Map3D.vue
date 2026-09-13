@@ -6,7 +6,6 @@
 import * as Cesium from "cesium";
 import { onMounted, onUnmounted } from "vue";
 import "cesium/Build/Cesium/Widgets/widgets.css";
-import chinaData from "@/assets/data/china.json";
 
 function initMap() {
   const viewer = new Cesium.Viewer("map3d", {
@@ -27,6 +26,7 @@ function initMap() {
       }),
     ),
     terrain: Cesium.Terrain.fromWorldTerrain(),
+    useBrowserRecommendedResolution: false,
   });
   window.viewer = viewer;
   // viewer.scene.globe.enableLighting = true;
@@ -41,12 +41,6 @@ function initMap() {
     new Cesium.HeadingPitchRange(heading, pitch, 0.0000000001),
   );
   viewer.camera.lookAtTransform(Cesium.Matrix4.IDENTITY);
-
-  Cesium.GeoJsonDataSource.load(chinaData, {
-    clampToGround: true,
-  }).then((dataSource) => {
-    viewer.dataSources.add(dataSource);
-  });
 }
 
 onMounted(() => {

@@ -91,17 +91,6 @@
             />
           </el-form-item>
 
-          <el-form-item label="邮箱" prop="email">
-            <el-input
-              v-model="form.email"
-              size="large"
-              type="email"
-              placeholder="请输入常用邮箱"
-              autocomplete="email"
-              :prefix-icon="Message"
-            />
-          </el-form-item>
-
           <el-form-item label="密码" prop="password">
             <el-input
               v-model="form.password"
@@ -150,6 +139,17 @@
                 </button>
               </template>
             </el-input>
+          </el-form-item>
+
+          <el-form-item label="邮箱（可选）" prop="email">
+            <el-input
+              v-model="form.email"
+              size="large"
+              type="email"
+              placeholder="请输入常用邮箱"
+              autocomplete="email"
+              :prefix-icon="Message"
+            />
           </el-form-item>
 
           <el-form-item class="agreement-item" prop="agreement">
@@ -254,14 +254,7 @@ const rules = {
       message: "账号须为4-10位，包含字母、数字和下划线，且以英文字母开头。",
     },
   ],
-  email: [
-    { required: true, message: "请输入邮箱", trigger: "blur" },
-    {
-      type: "email",
-      message: "请输入正确的邮箱地址",
-      trigger: ["blur", "change"],
-    },
-  ],
+
   password: [
     { required: true, message: "请输入密码", trigger: "blur" },
     {
@@ -270,7 +263,15 @@ const rules = {
     },
   ],
   confirmPassword: [
+    { required: true, message: "请输入密码", trigger: "blur" },
     { validator: validateConfirmPassword, trigger: ["blur", "change"] },
+  ],
+  email: [
+    {
+      type: "email",
+      message: "请输入正确的邮箱地址",
+      trigger: ["blur", "change"],
+    },
   ],
   agreement: [
     {

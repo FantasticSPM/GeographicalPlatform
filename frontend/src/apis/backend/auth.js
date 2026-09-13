@@ -1,11 +1,12 @@
 import request from "@/utils/request";
+import { removeEmptyFields } from "@/utils/common";
 
 // 注册
 export function apiRegister(data) {
   return request({
     url: "/auth/register",
     method: "post",
-    data,
+    data: removeEmptyFields(data),
   });
 }
 
