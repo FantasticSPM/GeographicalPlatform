@@ -20,9 +20,18 @@ function initMap() {
     timeline: false, // 时间滚动条控件
     navigationHelpButton: false, // 默认的相机控制提示控件
     baseLayer: new Cesium.ImageryLayer(
-      new Cesium.UrlTemplateImageryProvider({
-        url: "https://webst01.is.autonavi.com/appmaptile?style=6&x={x}&y={y}&z={z}",
+      // new Cesium.UrlTemplateImageryProvider({
+      //   url: "https://webst01.is.autonavi.com/appmaptile?style=6&x={x}&y={y}&z={z}",
+      //   maximumLevel: 18,
+      // }),
+      new Cesium.WebMapTileServiceImageryProvider({
+        url: "http://t{s}.tianditu.gov.cn/img_w/wmts?tk=b2bd626091f9d4d1912dedcd8fb7648d",
+        layer: "img",
+        style: "default",
+        tileMatrixSetID: "w",
+        format: "tiles",
         maximumLevel: 18,
+        subdomains: [0, 1, 2, 3, 4, 5, 6, 7],
       }),
     ),
     terrain: Cesium.Terrain.fromWorldTerrain(),
@@ -32,6 +41,9 @@ function initMap() {
   // viewer.scene.globe.enableLighting = true;
   viewer.scene.globe.depthTestAgainstTerrain = true;
   viewer.scene.globe.showGroundAtmosphere = true; // 显示地球大气层
+
+  // 地形夸张
+  viewer.scene.verticalExaggeration = 1.5;
 
   const heading = Cesium.Math.toRadians(0);
   const pitch = Cesium.Math.toRadians(-90);
