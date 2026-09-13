@@ -57,22 +57,7 @@ import { Aim, ArrowRight, Location } from "@element-plus/icons-vue";
 import Panel2 from "@/components/panel/Panel2.vue";
 import { flyToLookAt } from "@/utils/viewer";
 
-const list = [
-  {
-    id: "liangqiao-village",
-    name: "凉桥村",
-    position: [109.69505162189446, 31.902185605993225, 5000],
-    heading: -28.9,
-    pitch: -45,
-  },
-  {
-    id: "tahu-village",
-    name: "塔湖村",
-    position: [113.64430780873607, 30.752534669550396, 1000],
-    heading: 0,
-    pitch: -45,
-  },
-];
+const list = [];
 
 const activeId = ref("");
 
@@ -92,11 +77,15 @@ function handleClick(item) {
 
   flyToLookAt(
     window.viewer,
-    Cesium.Cartesian3.fromDegrees(position[0], position[1]),
+    Cesium.Cartesian3.fromDegrees(
+      position[0],
+      position[1],
+      position[2] * viewer.scene.verticalExaggeration,
+    ),
     new Cesium.HeadingPitchRange(
-      Cesium.Math.toRadians(item.heading),
-      Cesium.Math.toRadians(item.pitch),
-      position[2] ?? 0,
+      Cesium.Math.toRadians(item.heading ?? 0),
+      Cesium.Math.toRadians(item.pitch ?? -45),
+      position[3] ?? 0,
     ),
   );
 }
