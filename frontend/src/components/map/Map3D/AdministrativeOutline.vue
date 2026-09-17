@@ -20,28 +20,27 @@ import { ref } from "vue";
 const value = ref(false);
 
 let ds;
-let ds1;
-function handleChange(value) {
-  if (value) {
-    Cesium.GeoJsonDataSource.load(chinaData, {
-      clampToGround: true,
-    }).then((dataSource) => {
-      ds = dataSource;
-      viewer.dataSources.add(dataSource);
-    });
 
-    Cesium.GeoJsonDataSource.load(outline, {
-      clampToGround: true,
-    }).then((dataSource) => {
-      ds1 = dataSource;
-      viewer.dataSources.add(dataSource);
+async function handleChange(value) {
+  if (value) {
+    ds = await Promise.all([
+      Cesium.GeoJsonDataSource.load(outline, {
+        clampToGround: true,
+      }),
+      Cesium.GeoJsonDataSource.load(chinaData, {
+        clampToGround: true,
+      }),
+    ]);
+
+    ds.forEach((item) => {
+      viewer.dataSources.add(item);
     });
   } else {
     if (ds) {
-      viewer.dataSources.remove(ds);
-      viewer.dataSources.remove(ds1);
+      ds.forEach((item) => {
+        viewer.dataSources.remove(item);
+      });
       ds = null;
-      ds1 = null;
     }
   }
 }
