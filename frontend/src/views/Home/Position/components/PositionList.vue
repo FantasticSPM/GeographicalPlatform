@@ -55,7 +55,7 @@ import * as Cesium from "cesium";
 import { ref } from "vue";
 import { Aim, ArrowRight, Location } from "@element-plus/icons-vue";
 import Panel2 from "@/components/panel/Panel2.vue";
-import { flyToLookAt } from "@/utils/viewer";
+import { flyToLookAt, addLabels, removeLabels } from "@/utils/viewer";
 
 const list = [];
 
@@ -69,8 +69,10 @@ function formatCoordinates(position) {
   return `${Math.abs(longitude).toFixed(3)}°${longitudeDirection} · ${Math.abs(latitude).toFixed(3)}°${latitudeDirection}`;
 }
 
+let labelId = "position";
 function handleClick(item) {
   if (!window.viewer) return;
+  removeLabels(window.viewer, labelId);
 
   activeId.value = item.id;
   const position = item.position;
@@ -87,6 +89,23 @@ function handleClick(item) {
       Cesium.Math.toRadians(item.pitch ?? -45),
       position[3] ?? 0,
     ),
+    {
+      complete: () => {
+        addLabels(
+          window.viewer,
+          {
+            longitude: position[0],
+            latitude: position[1],
+          },
+          {
+            text: item.name,
+            showBackground: true,
+            font: "55px sans-serif",
+          },
+          labelId,
+        );
+      },
+    },
   );
 }
 </script>

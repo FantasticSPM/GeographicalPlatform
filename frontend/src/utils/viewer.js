@@ -35,6 +35,7 @@ export function flyToLookAt(viewer, target, hpr, options = {}) {
       up,
     },
     duration: options.duration ?? 3,
+    complete: options.complete,
   });
 }
 

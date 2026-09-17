@@ -3,6 +3,7 @@
     <Map3D />
 
     <PositionList></PositionList>
+    <PositionPicker></PositionPicker>
     <AdministrativeOutline></AdministrativeOutline>
   </div>
 </template>
@@ -10,6 +11,7 @@
 <script setup>
 import Map3D from "@/components/map/Map3D/Map3D.vue";
 import PositionList from "./components/PositionList.vue";
+import PositionPicker from "./components/PositionPicker.vue";
 import AdministrativeOutline from "@/components/map/Map3D/AdministrativeOutline.vue";
 </script>
 
