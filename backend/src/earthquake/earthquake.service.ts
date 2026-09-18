@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateEarthquakeDto } from './dto/create-earthquake.dto.ts';
 import { UpdateEarthquakeDto } from './dto/update-earthquake.dto.ts';
 import { generateUniqueId } from '../common/tools/index.ts';
@@ -40,9 +40,11 @@ export class EarthquakeService {
 
   async findAll() {
     async function getData(): Promise<EarthquakeItem[]> {
-      const result = await axios.get(
-        'https://data.earthquake.cn/datashare/report.shtml?PAGEID=zxdzall',
-      );
+      const result = await axios
+        .get('https://data.earthquake.cn/datashare/report.shtml?PAGEID=zxdzall')
+        .catch((e) => {
+          throw new BadRequestException('请求异常');
+        });
 
       const $ = cheerio.load(result.data);
 
