@@ -95,6 +95,7 @@ const items = [
   { index: "/position", label: "位置专题" },
   { index: "/weather", label: "天气信息" },
   { index: "/theme", label: "特色专题" },
+  { index: "/ai", label: "AI助手" },
   { index: "/help", label: "平台信息" },
 ];
 
