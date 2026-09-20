@@ -34,13 +34,13 @@
 
 <script setup>
 import { ref } from "vue";
-// import { XSender, BubbleList } from "vue-element-plus-x";
 import BubbleList from "./BubbleList.vue";
 import Sender from "./Sender.vue";
 import logo from "@/components/logo.vue";
 import { apiSendDialogue } from "@/apis/backend/ai.js";
 import { useAiSessiontore } from "@/stores/ai-session.js";
 import SystemTools from "@/utils/system-tools.js";
+import { ElMessage } from "element-plus";
 const aiSessionStore = useAiSessiontore();
 const senderValue = ref("");
 const bubbleList = ref(null);
@@ -81,6 +81,13 @@ async function runAgent(message) {
       stream: true,
     });
     bubbleList.value.endAction();
+    if (res.status !== 200) {
+      const r = await res.json();
+      const ms = r?.msg || "请求异常";
+      ElMessage.error(ms);
+      bubbleList.value.startAction(ms);
+      return;
+    }
 
     const key = Math.random();
 
