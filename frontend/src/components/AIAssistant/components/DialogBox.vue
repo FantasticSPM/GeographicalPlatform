@@ -1,11 +1,10 @@
 <template>
   <div class="dialog-box">
     <BubbleList
+      ref="bubbleList"
       class="dialog-box-list"
       :list="aiSessionStore.messageList"
-      :thinking="thinking"
       maxHeight="calc(100% - 120px)"
-      v-if="aiSessionStore.messageList.length"
     ></BubbleList>
     <div
       class="center"
@@ -44,7 +43,7 @@ import { useAiSessiontore } from "@/stores/ai-session.js";
 import SystemTools from "@/utils/system-tools.js";
 const aiSessionStore = useAiSessiontore();
 const senderValue = ref("");
-const thinking = ref(false);
+const bubbleList = ref(null);
 const tools = Object.entries(SystemTools).map(([name, tool]) => {
   return {
     type: "function",
@@ -67,7 +66,7 @@ async function handleSubmit(e) {
 }
 
 async function runAgent(message) {
-  thinking.value = true;
+  bubbleList.value.startAction("思考中......");
   aiSessionStore.addMessage(
     getItem({
       key: new Date().getTime(),
@@ -81,7 +80,7 @@ async function runAgent(message) {
       tools,
       stream: true,
     });
-    thinking.value = false;
+    bubbleList.value.endAction();
 
     const key = Math.random();
 
@@ -133,7 +132,9 @@ async function runAgent(message) {
         console.log("Unknown tool: " + toolName);
         continue;
       }
+      bubbleList.value.startAction("正在操作中......");
       const result = await tool_function.exec(args);
+      bubbleList.value.endAction();
       aiSessionStore.addMessage({
         role: "tool",
         tool_call_id: tool.id,
@@ -173,26 +174,12 @@ async function readStream(response, onMessage) {
 function getItem(item) {
   const { role } = item;
 
-  const placement = role === "assistant" ? "start" : "end";
-  const loading = false;
-  const shape = "corner";
-  const variant = role === "assistant" ? "filled" : "outlined";
-  const isMarkdown = true;
-  const typing = role === "assistant" ? true : false;
-  const isFog = role === "assistant";
   const avatar =
     role === "assistant"
       ? "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
       : "https://avatars.githubusercontent.com/u/76239030?v=4";
   return {
     ...item,
-    placement, // start | end 气泡位置
-    loading, // 当前气泡的加载状态
-    shape, // 气泡的形状
-    variant, // 气泡的样式
-    isMarkdown, // 是否渲染为 markdown
-    typing, // 是否开启打字器效果 该属性不会和流式接受冲突
-    isFog, // 是否开启打字雾化效果，该效果 v1.1.6 新增，且在 typing 为 true 时生效，该效果会覆盖 typing 的 suffix 属性
     avatar,
     avatarSize: "24px", // 头像占位大小
     avatarGap: "12px", // 头像与气泡之间的距离

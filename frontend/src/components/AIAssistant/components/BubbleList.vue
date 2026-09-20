@@ -1,6 +1,6 @@
 <template>
   <div class="bubble-list" ref="bubbleList">
-    <template v-for="i in list" :key="i.key">
+    <template v-for="i in all_list" :key="i.key">
       <Bubble
         :data="i"
         v-if="
@@ -8,12 +8,11 @@
         "
       ></Bubble>
     </template>
-    <Bubble v-if="thinking" :data="data"></Bubble>
   </div>
 </template>
 
 <script setup>
-import { watch, ref, nextTick, onUnmounted } from "vue";
+import { watch, ref, nextTick, onUnmounted, computed } from "vue";
 import Bubble from "./Bubble.vue";
 const props = defineProps({
   list: {
@@ -24,17 +23,12 @@ const props = defineProps({
     type: String,
     default: "auto",
   },
-  thinking: {
-    type: Boolean,
-    default: false,
-  },
 });
-
+const actionList = ref([]);
+const all_list = computed(() => {
+  return [...props.list, ...actionList.value];
+});
 const bubbleList = ref(null);
-const data = ref({
-  role: "assistant",
-  content: "思考中...",
-});
 
 watch(
   () => props.list,
@@ -49,6 +43,28 @@ watch(
     deep: true,
   },
 );
+
+function startAction(text) {
+  endAction();
+  actionList.value.push({
+    key: Math.random(),
+    role: "assistant",
+    content: text,
+    avatar:
+      "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png",
+    avatarSize: "24px", // 头像占位大小
+    avatarGap: "12px", // 头像与气泡之间的距离
+  });
+}
+
+function endAction() {
+  actionList.value.length = 0;
+}
+
+defineExpose({
+  startAction,
+  endAction,
+});
 </script>
 
 <style scoped lang="scss">
