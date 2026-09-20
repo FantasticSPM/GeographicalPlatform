@@ -78,6 +78,7 @@ import {
   Location,
 } from "@element-plus/icons-vue";
 import { ElMessage } from "element-plus";
+import { writeClipboard } from "@/utils/common";
 
 const position = ref("");
 const copied = ref(false);
@@ -107,30 +108,6 @@ function initHandler() {
     ];
     copied.value = false;
   }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
-}
-
-async function writeClipboard(text) {
-  if (navigator.clipboard?.writeText) {
-    try {
-      await navigator.clipboard.writeText(text);
-      return;
-    } catch {
-      // Fall back to the legacy API when clipboard permissions are unavailable.
-    }
-  }
-
-  const input = document.createElement("textarea");
-  input.value = text;
-  input.setAttribute("readonly", "");
-  input.style.position = "fixed";
-  input.style.opacity = "0";
-  document.body.appendChild(input);
-  try {
-    input.select();
-    if (!document.execCommand("copy")) throw new Error("copy failed");
-  } finally {
-    input.remove();
-  }
 }
 
 async function copyPosition() {

@@ -71,7 +71,6 @@ defineExpose({
 .bubble-list {
   display: flex;
   flex-direction: column;
-  gap: 10px;
   max-height: v-bind(maxHeight);
   overflow: auto;
   padding: 5px;

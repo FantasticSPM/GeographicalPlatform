@@ -29,7 +29,7 @@
           </el-icon>
         </el-button>
         <el-button
-          :disabled="!textarea"
+          :disabled="!textarea || disabled"
           circle
           type="primary"
           @click="handleSubmit"
@@ -41,7 +41,6 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
 import Clear from "@/components/Icon/Clear.vue";
 const props = defineProps({
   placeholder: {
@@ -62,6 +61,10 @@ const props = defineProps({
   autoSize: {
     type: [Boolean, Object],
     default: true,
+  },
+  disabled: {
+    type: Boolean,
+    default: false,
   },
 });
 const emits = defineEmits(["submit"]);

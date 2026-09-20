@@ -24,6 +24,7 @@
         v-model="senderValue"
         clearable
         :auto-size="{ minRows: 2, maxRows: 5 }"
+        :disabled="senderDisabled"
         placeholder="快与AI智能助手-小空进行对话吧~"
         @submit="handleSubmit"
       >
@@ -43,6 +44,7 @@ import SystemTools from "@/utils/system-tools.js";
 import { ElMessage } from "element-plus";
 const aiSessionStore = useAiSessiontore();
 const senderValue = ref("");
+const senderDisabled = ref(false);
 const bubbleList = ref(null);
 const tools = Object.entries(SystemTools).map(([name, tool]) => {
   return {
@@ -60,9 +62,16 @@ async function handleSubmit(e) {
     const sessionKey = new Date().getTime();
     aiSessionStore.createSession(sessionKey);
   }
-  const message = senderValue.value;
+  const message = senderValue.value.trim();
+  if (message === "") return;
   senderValue.value = "";
-  await runAgent(message);
+  senderDisabled.value = true;
+  try {
+    await runAgent(message);
+  } catch (e) {
+  } finally {
+    senderDisabled.value = false;
+  }
 }
 
 async function runAgent(message) {
