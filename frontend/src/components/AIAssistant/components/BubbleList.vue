@@ -28,15 +28,16 @@ const props = defineProps({
 const bubbleList = ref(null);
 
 watch(
-  () => props.list.length,
-  (newLength, oldLength) => {
+  () => props.list,
+  () => {
     nextTick(() => {
-      if (newLength > oldLength) {
-        bubbleList.value.scrollTo({
-          top: bubbleList.value.scrollHeight,
-        });
-      }
+      bubbleList.value.scrollTo({
+        top: bubbleList.value.scrollHeight,
+      });
     });
+  },
+  {
+    deep: true,
   },
 );
 </script>

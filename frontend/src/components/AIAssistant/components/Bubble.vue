@@ -6,23 +6,41 @@
     }"
   >
     <img :src="data.avatar" alt="" class="avatar" />
-    <div class="content">{{ data.content }}</div>
+    <div class="content" v-html="data.mdContent"></div>
   </div>
 </template>
 
 <script setup>
+import MarkdownIt from "markdown-it";
+import hljs from "highlight.js";
+import "highlight.js/styles/github-dark.css";
+import { computed } from "vue";
+const md = new MarkdownIt({
+  // highlight(code, lang) {
+  //   if (lang && hljs.getLanguage(lang)) {
+  //     return hljs.highlight(code, {
+  //       language: lang,
+  //     }).value;
+  //   }
+  //   return hljs.highlightAuto(code).value;
+  // },
+});
+
 const props = defineProps({
   data: {
     type: Object,
     default: () => ({}),
   },
 });
+
+props.data.mdContent = computed(() => {
+  return md.render(props.data.content);
+});
 </script>
 
 <style scoped lang="scss">
 .bubble {
   display: flex;
-  align-items: center;
   gap: v-bind("props.data.avatarGap");
 
   .avatar {
