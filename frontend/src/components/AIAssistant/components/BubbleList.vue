@@ -8,11 +8,12 @@
         "
       ></Bubble>
     </template>
+    <Bubble v-if="thinking" :data="data"></Bubble>
   </div>
 </template>
 
 <script setup>
-import { watch, ref, nextTick } from "vue";
+import { watch, ref, nextTick, onUnmounted } from "vue";
 import Bubble from "./Bubble.vue";
 const props = defineProps({
   list: {
@@ -23,9 +24,17 @@ const props = defineProps({
     type: String,
     default: "auto",
   },
+  thinking: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const bubbleList = ref(null);
+const data = ref({
+  role: "assistant",
+  content: "思考中...",
+});
 
 watch(
   () => props.list,

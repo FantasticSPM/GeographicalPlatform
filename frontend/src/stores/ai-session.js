@@ -48,6 +48,10 @@ export const useAiSessiontore = defineStore("ai-session", () => {
 
   // 删除消息
   function deleteMessage(index) {
+    if (typeof index === "object") {
+      messageList.value = messageList.value.filter((item) => item !== index);
+      return;
+    }
     if (index === undefined) {
       return messageList.value.pop();
     }

@@ -16,14 +16,14 @@ import hljs from "highlight.js";
 import "highlight.js/styles/github-dark.css";
 import { computed } from "vue";
 const md = new MarkdownIt({
-  // highlight(code, lang) {
-  //   if (lang && hljs.getLanguage(lang)) {
-  //     return hljs.highlight(code, {
-  //       language: lang,
-  //     }).value;
-  //   }
-  //   return hljs.highlightAuto(code).value;
-  // },
+  highlight(code, lang) {
+    if (lang && hljs.getLanguage(lang)) {
+      return hljs.highlight(code, {
+        language: lang,
+      }).value;
+    }
+    return hljs.highlightAuto(code).value;
+  },
 });
 
 const props = defineProps({
@@ -34,7 +34,7 @@ const props = defineProps({
 });
 
 props.data.mdContent = computed(() => {
-  return md.render(props.data.content);
+  return md.render(props.data.content).trimEnd();
 });
 </script>
 

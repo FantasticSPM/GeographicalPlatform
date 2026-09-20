@@ -3,6 +3,7 @@
     <BubbleList
       class="dialog-box-list"
       :list="aiSessionStore.messageList"
+      :thinking="thinking"
       maxHeight="calc(100% - 120px)"
       v-if="aiSessionStore.messageList.length"
     ></BubbleList>
@@ -43,7 +44,7 @@ import { useAiSessiontore } from "@/stores/ai-session.js";
 import SystemTools from "@/utils/system-tools.js";
 const aiSessionStore = useAiSessiontore();
 const senderValue = ref("");
-
+const thinking = ref(false);
 const tools = Object.entries(SystemTools).map(([name, tool]) => {
   return {
     type: "function",
@@ -66,6 +67,7 @@ async function handleSubmit(e) {
 }
 
 async function runAgent(message) {
+  thinking.value = true;
   aiSessionStore.addMessage(
     getItem({
       key: new Date().getTime(),
@@ -79,6 +81,7 @@ async function runAgent(message) {
       tools,
       stream: true,
     });
+    thinking.value = false;
 
     const key = Math.random();
 
