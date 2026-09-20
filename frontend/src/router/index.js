@@ -58,11 +58,6 @@ const router = createRouter({
           component: () => import("@/views/Home/Theme/index.vue"),
         },
         {
-          path: "ai",
-          name: "ai",
-          component: () => import("@/views/Home/AIAssistant/index.vue"),
-        },
-        {
           path: "help",
           name: "help",
           component: () => import("@/views/Home/Help/index.vue"),

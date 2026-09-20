@@ -7,13 +7,22 @@
       <RouterView />
     </el-main>
   </el-container>
+  <AIAssiant class="ai"></AIAssiant>
 </template>
 
 <script setup>
-import HeaderComponent from './components/Layouts/HeaderComponent.vue'
+import HeaderComponent from "./components/Layouts/HeaderComponent.vue";
+import AIAssiant from "@/components/AIAssistant/index.vue";
 </script>
 
 <style lang="scss" scoped>
+.ai {
+  position: fixed;
+  bottom: 100px;
+  right: 10px;
+  z-index: 3000;
+}
+
 .el-header {
   // padding: 0;
   background-color: #0b7ae1;

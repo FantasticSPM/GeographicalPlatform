@@ -8,6 +8,7 @@
       class="el-textarea"
       type="textarea"
       resize="none"
+      @keydown.enter="handleSubmit"
     />
     <div class="sender-updown">
       <div v-if="$slots.prefix" class="sender-updown-prefix">

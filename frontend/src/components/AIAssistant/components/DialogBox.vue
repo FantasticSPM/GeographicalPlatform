@@ -34,38 +34,96 @@
 
 <script setup>
 import { ref } from "vue";
-import { XSender, BubbleList } from "vue-element-plus-x";
+// import { XSender, BubbleList } from "vue-element-plus-x";
+import BubbleList from "./BubbleList.vue";
 import Sender from "./Sender.vue";
 import logo from "@/components/logo.vue";
 import { apiSendDialogue } from "@/apis/backend/ai.js";
 import { useAiSessiontore } from "@/stores/ai-session.js";
+import SystemTools from "@/utils/system-tools.js";
 const aiSessionStore = useAiSessiontore();
 const senderValue = ref("");
+
+const tools = Object.entries(SystemTools).map(([name, tool]) => {
+  return {
+    type: "function",
+    function: {
+      name,
+      description: tool.description,
+      parameters: tool.parameters,
+    },
+  };
+});
 
 async function handleSubmit(e) {
   if (aiSessionStore.messageList.length === 0) {
     const sessionKey = new Date().getTime();
     aiSessionStore.createSession(sessionKey);
   }
+  const message = senderValue.value;
+  senderValue.value = "";
+  await runAgent(message);
+  // aiSessionStore.addMessage(
+  //   getItem({
+  //     key: new Date().getTime(),
+  //     role: "user",
+  //     content: senderValue.value,
+  //   }),
+  // );
+
+  // const res = await apiSendDialogue({
+  //   messages: getItems(),
+  // });
+
+  // aiSessionStore.addMessage(
+  //   getItem({
+  //     key: new Date().getTime() + Math.random(),
+  //     role: "assistant",
+  //     content: "你好，我是AI智能助手-小空，有什么可以帮助你的吗？",
+  //     ...res.data,
+  //   }),
+  // );
+}
+
+async function runAgent(message) {
   aiSessionStore.addMessage(
     getItem({
       key: new Date().getTime(),
       role: "user",
-      content: senderValue.value,
+      content: message,
     }),
   );
+  while (true) {
+    const res = await apiSendDialogue({
+      messages: getItems(),
+      tools,
+    });
+    if (!res || !res.data) return;
 
-  // const res = await apiSendDialogue(getItems());
+    aiSessionStore.addMessage(getItem(res.data));
 
-  aiSessionStore.addMessage(
-    getItem({
-      key: new Date().getTime() + Math.random(),
-      role: "assistant",
-      content: "你好，我是AI智能助手-小空，有什么可以帮助你的吗？",
-      // ...res.data,
-    }),
-  );
-  senderValue.value = "";
+    const tool_calls = res.data?.tool_calls;
+    if (!tool_calls || tool_calls.length === 0) {
+      break;
+    }
+    for (let i = 0; i < tool_calls.length; i++) {
+      const tool = tool_calls[i];
+      const toolName = tool.function.name;
+      const args = JSON.parse(tool.function.arguments);
+
+      const tool_function = SystemTools[toolName];
+      if (!tool_function) {
+        console.log("Unknown tool: " + toolName);
+        continue;
+      }
+      const result = await tool_function.exec(args);
+      aiSessionStore.addMessage({
+        role: "tool",
+        tool_call_id: tool.id,
+        content: JSON.stringify(result),
+      });
+    }
+  }
 }
 
 function getItem(item) {
@@ -99,21 +157,29 @@ function getItem(item) {
 
 function getItems() {
   return aiSessionStore.messageList.map((i) => {
-    return {
+    const data = {
       role: i.role,
       content: i.content,
     };
+    if (i.tool_call_id) {
+      data.tool_call_id = i.tool_call_id;
+    }
+    if (i.reasoning_content) {
+      data.reasoning_content = i.reasoning_content;
+    }
+    if (i.tool_calls) {
+      data.tool_calls = i.tool_calls;
+    }
+    return data;
   });
 }
 </script>
 
 <style scoped lang="scss">
 .dialog-box {
-  width: 70%;
-  margin: 0 auto;
-  margin-top: 60px;
+  margin-top: 50px;
   position: relative;
-  height: calc(100% - 60px);
+  height: calc(100% - 50px);
   // display: flex;
   // flex-direction: column;
   // height: 230px;
