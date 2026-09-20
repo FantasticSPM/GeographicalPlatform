@@ -13,7 +13,7 @@ export class CustomGlobeExceptionFilter implements ExceptionFilter {
         message = message[0];
       }
     }
-    response.status(200).json({
+    response.status(statusCode).json({
       code: statusCode,
       msg: message,
       data: null,

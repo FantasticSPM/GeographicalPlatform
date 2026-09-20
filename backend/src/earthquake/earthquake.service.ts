@@ -34,17 +34,18 @@ const newsListCache: listCache = {
 
 @Injectable()
 export class EarthquakeService {
+  private news_url =
+    'https://data.earthquake.cn/datashare/report.shtml?PAGEID=zxdzall';
   create(createEarthquakeDto: CreateEarthquakeDto) {
     return 'This action adds a new earthquake';
   }
 
   async findAll() {
+    const news_url = this.news_url;
     async function getData(): Promise<EarthquakeItem[]> {
-      const result = await axios
-        .get('https://data.earthquake.cn/datashare/report.shtml?PAGEID=zxdzall')
-        .catch((e) => {
-          throw new BadRequestException('请求异常');
-        });
+      const result = await axios.get(news_url).catch((e) => {
+        throw new BadRequestException('请求异常');
+      });
 
       const $ = cheerio.load(result.data);
 

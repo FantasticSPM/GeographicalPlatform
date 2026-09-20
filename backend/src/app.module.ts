@@ -5,6 +5,7 @@ import { AppService } from './app.service.ts';
 import { EarthquakeModule } from './earthquake/earthquake.module.ts';
 import { AuthModule } from './auth/auth.module.ts';
 import { TestModule } from './test/test.module.ts';
+import { ChatModule } from './chat/chat.module.js';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { TestModule } from './test/test.module.ts';
     EarthquakeModule,
     AuthModule,
     TestModule,
+    ChatModule,
   ],
   controllers: [AppController],
   providers: [AppService],
