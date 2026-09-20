@@ -63,26 +63,6 @@ async function handleSubmit(e) {
   const message = senderValue.value;
   senderValue.value = "";
   await runAgent(message);
-  // aiSessionStore.addMessage(
-  //   getItem({
-  //     key: new Date().getTime(),
-  //     role: "user",
-  //     content: senderValue.value,
-  //   }),
-  // );
-
-  // const res = await apiSendDialogue({
-  //   messages: getItems(),
-  // });
-
-  // aiSessionStore.addMessage(
-  //   getItem({
-  //     key: new Date().getTime() + Math.random(),
-  //     role: "assistant",
-  //     content: "你好，我是AI智能助手-小空，有什么可以帮助你的吗？",
-  //     ...res.data,
-  //   }),
-  // );
 }
 
 async function runAgent(message) {
@@ -97,12 +77,46 @@ async function runAgent(message) {
     const res = await apiSendDialogue({
       messages: getItems(),
       tools,
+      stream: true,
     });
-    if (!res || !res.data) return;
 
-    aiSessionStore.addMessage(getItem(res.data));
+    const key = Math.random();
 
-    const tool_calls = res.data?.tool_calls;
+    const message = aiSessionStore.addMessage(
+      getItem({
+        key,
+        role: "assistant",
+        content: "",
+      }),
+    );
+
+    await readStream(res, (data) => {
+      const delta = data?.choices?.[0]?.delta;
+      if (!delta) return;
+
+      // 拼接流式传输的文字
+      message.content += delta.content ?? "";
+      const reasoning_content = delta?.reasoning_content;
+      if (reasoning_content) {
+        message.reasoning_content ||= "";
+        message.reasoning_content += reasoning_content;
+      }
+
+      const tool_calls = delta.tool_calls;
+      if (tool_calls) {
+        if (!message.tool_calls) {
+          message.tool_calls = tool_calls;
+          return;
+        }
+        tool_calls.forEach((i) => {
+          message.tool_calls[i.index].function.arguments +=
+            i.function.arguments;
+        });
+      }
+    });
+
+    // 读取数据是否需要调用工具
+    const tool_calls = message?.tool_calls;
     if (!tool_calls || tool_calls.length === 0) {
       break;
     }
@@ -122,6 +136,33 @@ async function runAgent(message) {
         tool_call_id: tool.id,
         content: JSON.stringify(result),
       });
+    }
+  }
+}
+
+async function readStream(response, onMessage) {
+  const reader = response.body?.getReader();
+  const decoder = new TextDecoder("utf-8");
+  let buffer = "";
+  while (true) {
+    const { value, done } = await reader.read();
+    if (done) {
+      break;
+    }
+    buffer += decoder.decode(value, { stream: true });
+    const events = buffer.split("\n\n");
+    buffer = events.pop() || "";
+    for (const event of events) {
+      if (!event.startsWith("data: ")) {
+        continue;
+      }
+
+      const data = event.slice(6);
+
+      if (data === "[DONE]") {
+        break;
+      }
+      onMessage(JSON.parse(data));
     }
   }
 }

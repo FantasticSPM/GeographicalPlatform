@@ -37,7 +37,23 @@ export const useAiSessiontore = defineStore("ai-session", () => {
 
   // 添加消息
   function addMessage(message) {
-    messageList.value.push(message);
+    const index = messageList.value.push(message);
+    return messageList.value[index - 1];
+  }
+
+  // 获取消息
+  function getMessage(index) {
+    return messageList.value[index] ?? {};
+  }
+
+  // 删除消息
+  function deleteMessage(index) {
+    if (index === undefined) {
+      return messageList.value.pop();
+    }
+    if (index !== -1) {
+      messageList.value.splice(index, 1);
+    }
   }
 
   // 清空消息
@@ -52,6 +68,8 @@ export const useAiSessiontore = defineStore("ai-session", () => {
     createSession,
     switchSession,
     addMessage,
+    deleteMessage,
     clearMessage,
+    getMessage,
   };
 });
