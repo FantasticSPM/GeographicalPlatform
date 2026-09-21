@@ -4,12 +4,16 @@
       @change="handleChange"
       v-model="value"
       class="ml-2"
+      inline-prompt
+      :active-icon="Check"
+      :inactive-icon="Close"
       style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ff4949"
     />
   </div>
 </template>
 
 <script setup>
+import { Check, Close } from "@element-plus/icons-vue";
 import * as Cesium from "cesium";
 import { polygonToLine } from "@turf/turf";
 import chinaData from "@/assets/data/china.json";
@@ -46,10 +50,4 @@ async function handleChange(value) {
 }
 </script>
 
-<style lang="scss" scoped>
-.administrative-outline {
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
-}
-</style>
+<style lang="scss" scoped></style>

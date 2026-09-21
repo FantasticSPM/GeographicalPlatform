@@ -16,7 +16,6 @@
       :show-close="false"
       class="ai-dialog"
     >
-      <template #header></template>
       <el-container class="ai-assistant-dialog">
         <el-aside class="left-bar" v-if="isShowLeft">
           <SessionManagment

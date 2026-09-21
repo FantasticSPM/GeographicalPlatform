@@ -4,7 +4,9 @@
 
     <PositionList></PositionList>
     <PositionPicker></PositionPicker>
-    <AdministrativeOutline></AdministrativeOutline>
+    <AdministrativeOutline
+      class="administrative-outline"
+    ></AdministrativeOutline>
   </div>
 </template>
 
@@ -21,5 +23,11 @@ import AdministrativeOutline from "@/components/map/Map3D/AdministrativeOutline.
   position: relative;
   width: 100%;
   height: calc(100vh - 80px);
+}
+
+.administrative-outline {
+  position: absolute;
+  left: 20px;
+  bottom: 20px;
 }
 </style>

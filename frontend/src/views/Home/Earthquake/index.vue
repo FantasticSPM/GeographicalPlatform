@@ -11,7 +11,9 @@
       v-if="isShowDetail"
       @close="handleDetailsClose"
     ></EarthquakeDetails>
-    <AdministrativeOutline></AdministrativeOutline>
+    <AdministrativeOutline
+      class="administrative-outline"
+    ></AdministrativeOutline>
   </div>
 </template>
 
@@ -113,5 +115,11 @@ onBeforeUnmount(() => {
   width: 100%;
   height: calc(100vh - 80px);
   position: relative;
+}
+
+.administrative-outline {
+  position: absolute;
+  left: 20px;
+  bottom: 20px;
 }
 </style>

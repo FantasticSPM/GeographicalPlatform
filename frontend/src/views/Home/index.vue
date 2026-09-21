@@ -18,9 +18,9 @@ import AIAssiant from "@/components/AIAssistant/index.vue";
 <style lang="scss" scoped>
 .ai {
   position: fixed;
-  bottom: 100px;
-  right: 10px;
-  z-index: 3000;
+  bottom: 20px;
+  right: 20px;
+  z-index: 2;
 }
 
 .el-header {
