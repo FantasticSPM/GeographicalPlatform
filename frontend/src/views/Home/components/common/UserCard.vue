@@ -23,14 +23,14 @@
           <el-button size="small" @click="logout">退出登录</el-button>
         </div>
         <div class="flex-center" style="gap: 10px">
-          <el-avatar class="avatar" :src="avatarUrl" />
+          <UserAvatar />
           <div class="user-info">
             <div class="nick-name">
-              <span>{{ userStore.user?.nick_name || "" }}</span>
+              <span>{{ user.nick_name || "" }}</span>
               <el-icon><CopyDocument /></el-icon>
             </div>
             <div class="user-name">
-              <span>用户名：{{ userStore.user?.username || "" }}</span>
+              <span>用户名：{{ user.username || "" }}</span>
               <el-icon><CopyDocument /></el-icon>
             </div>
             <el-tag size="small" type="primary">个人账号</el-tag>
@@ -40,28 +40,28 @@
     </template>
 
     <div class="user" id="user">
-      <el-avatar :src="avatarUrl" />
-      <span>{{ userStore.user?.nick_name || "" }}</span>
+      <UserAvatar />
+      <span>{{ user.nick_name || "" }}</span>
     </div>
   </el-dropdown>
 </template>
 
 <script setup>
+import UserAvatar from "@/components/UserAvatar.vue";
 import { useUserStore } from "@/stores/user";
-import { computed } from "vue";
-import { getPublicUrl } from "@/utils/common";
 import { apiLogout } from "@/apis/backend/auth";
 import { useRouter } from "vue-router";
 import { ElMessage } from "element-plus";
+import { storeToRefs } from "pinia";
 const userStore = useUserStore();
 const router = useRouter();
-const avatarUrl = computed(() => {
-  return userStore.user?.avatar || getPublicUrl("/images/defaultAvatar.jpg");
-});
+
+const { user } = storeToRefs(userStore);
+const { setUser } = userStore;
 
 async function logout() {
   await apiLogout();
-  userStore.setUser(null);
+  setUser(null);
   router.push({ name: "login" });
   ElMessage.success("退出登录成功");
 }
