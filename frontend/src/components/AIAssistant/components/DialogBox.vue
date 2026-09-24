@@ -5,7 +5,15 @@
       class="dialog-box-list"
       :list="aiSessionStore.messageList"
       maxHeight="calc(100% - 120px)"
-    ></BubbleList>
+    >
+      <template #avatar="{ role }">
+        <UserAvatar v-if="role === 'user'" size="100%" />
+        <img
+          src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
+          v-else
+        />
+      </template>
+    </BubbleList>
     <div
       class="center"
       :class="{
@@ -34,6 +42,7 @@
 </template>
 
 <script setup>
+import UserAvatar from "@/components/UserAvatar.vue";
 import { ref } from "vue";
 import BubbleList from "./BubbleList.vue";
 import Sender from "./Sender.vue";
@@ -197,7 +206,7 @@ function getItem(item) {
   return {
     ...item,
     avatar,
-    avatarSize: "24px", // 头像占位大小
+    avatarSize: "35px", // 头像占位大小
     avatarGap: "12px", // 头像与气泡之间的距离
   };
 }

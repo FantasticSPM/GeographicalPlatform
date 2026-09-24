@@ -11,6 +11,10 @@ const props = defineProps({
   user: {
     type: Object,
   },
+  size: {
+    type: String,
+    default: "40px",
+  },
 });
 
 const userInfo = computed(() => {
@@ -20,8 +24,8 @@ const userInfo = computed(() => {
 
 <style scoped lang="scss">
 .default-avatar {
-  width: 40px;
-  height: 40px;
+  width: v-bind("props.size");
+  height: v-bind("props.size");
   border-radius: 50%;
   background-color: #409eff;
   color: #fff;

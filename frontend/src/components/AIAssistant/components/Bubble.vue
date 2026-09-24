@@ -5,7 +5,10 @@
       'flex-end': data.role === 'user',
     }"
   >
-    <img :src="data.avatar" alt="" class="avatar" />
+    <div class="avatar">
+      <slot name="avatar" v-if="$slots.avatar" :role="data.role"></slot>
+      <img v-else :src="data.avatar" alt="" />
+    </div>
     <div class="content-body">
       <div class="content" v-html="data.mdContent"></div>
       <div class="action">
@@ -67,6 +70,13 @@ async function copy(content) {
   .avatar {
     width: v-bind("props.data.avatarSize");
     height: v-bind("props.data.avatarSize");
+    min-width: v-bind("props.data.avatarSize");
+    :deep(> img) {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
   }
   .content-body {
     position: relative;
