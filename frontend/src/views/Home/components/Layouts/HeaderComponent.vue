@@ -21,7 +21,7 @@
       </el-menu>
     </div>
     <div class="right">
-      <div v-if="!userStore.user" class="btns">
+      <div v-if="!user" class="btns">
         <el-button type="primary" size="small" @click="login">登录</el-button>
         <el-button type="primary" size="small" @click="register"
           >注册</el-button
@@ -57,36 +57,34 @@
           <ArrowRight />
         </el-icon>
       </RouterLink>
-      <div class="mobile-menu__account" v-if="!userStore.user">
+      <div class="mobile-menu__account" v-if="!user">
         <el-button type="primary" size="small" @click="login">登录</el-button>
         <el-button type="primary" size="small" @click="register"
           >注册</el-button
         >
       </div>
       <div v-else class="user">
-        <el-avatar :src="avatarUrl" />
-        <span>{{ userStore.user?.nick_name || "" }}</span>
+        <UserAvatar />
+        <span>{{ user.nick_name || "" }}</span>
       </div>
     </nav>
   </div>
 </template>
 
 <script setup>
-import { computed, ref, watch } from "vue";
+import { ref, watch } from "vue";
+import { storeToRefs } from "pinia";
 import { useRoute, useRouter } from "vue-router";
 import { useUserStore } from "@/stores/user";
-import { getPublicUrl } from "@/utils/common";
 import UserCard from "../common/UserCard.vue";
+import UserAvatar from "@/components/UserAvatar.vue";
 const route = useRoute();
 const router = useRouter();
 const userStore = useUserStore();
+const { user } = storeToRefs(userStore);
 const activeIndex = ref(route.matched?.[1].path || route.path);
 const mobileMenuOpen = ref(false);
 const title = import.meta.env.VITE_TITLE;
-
-const avatarUrl = computed(() => {
-  return userStore.user?.avatar || getPublicUrl("/images/defaultAvatar.jpg");
-});
 
 const items = [
   { index: "/index", label: "门户首页" },
