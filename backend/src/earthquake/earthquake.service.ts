@@ -2,6 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateEarthquakeDto } from './dto/create-earthquake.dto.ts';
 import { UpdateEarthquakeDto } from './dto/update-earthquake.dto.ts';
 import { generateUniqueId } from '../common/tools/index.ts';
+import { CacheService } from '../utils/cache.service.ts';
 import axios from 'axios';
 import * as cheerio from 'cheerio';
 
@@ -17,105 +18,91 @@ type EarthquakeItem = {
   location: string;
 };
 
-interface listCache {
-  data: EarthquakeItem[] | null;
-  time: number;
-}
-
-const listCache: listCache = {
-  data: null,
-  time: 0,
-};
-
-const newsListCache: listCache = {
-  data: null,
-  time: 0,
-};
+const EXPIRE_TIME = 10 * 60 * 1000;
 
 @Injectable()
 export class EarthquakeService {
   private news_url =
     'https://data.earthquake.cn/datashare/report.shtml?PAGEID=zxdzall';
+
+  constructor(private readonly cacheService: CacheService) {}
   create(createEarthquakeDto: CreateEarthquakeDto) {
     return 'This action adds a new earthquake';
   }
 
   async findAll() {
-    const news_url = this.news_url;
-    async function getData(): Promise<EarthquakeItem[]> {
-      const result = await axios.get(news_url).catch((e) => {
-        throw new BadRequestException('请求异常');
-      });
-
-      const $ = cheerio.load(result.data);
-
-      const data: EarthquakeItem[] = [];
-
-      const trs = $(
-        '#resource table.cls-data-table tbody tr:not(.cls-data-tr-head-list)',
-      );
-      $(trs).each((_, el) => {
-        const tds = $(el).find('.cls-data-td-list');
-        const index = +tds.eq(0).text();
-        const id = index;
-        const time = tds.eq(1).text();
-        const date = new Date(time);
-        const year = date.getFullYear(); // 年
-        const month = date.getMonth() + 1; // 月，注意 +1
-        const day = date.getDate(); // 日
-        const hour = date.getHours(); // 时
-        const minute = date.getMinutes(); // 分
-        const second = date.getSeconds(); // 秒
-        const longitude = +tds.eq(2).text();
-        const latitude = +tds.eq(3).text();
-        const depth = +tds.eq(4).text();
-        const magnitude = +tds.eq(5).text();
-        const location = tds.eq(6).text();
-
-        const content = `${month}月${day}日${hour}时${minute}分${second}秒${location}发生${magnitude}级地震，震源深度${depth}千米`;
-
-        data.push({
-          id,
-          content,
-          time: `${month}-${day}`,
-          detailTime: `${year}-${month}-${day} ${hour}:${minute}:${second}`,
-          longitude,
-          latitude,
-          depth,
-          magnitude,
-          location,
-        });
-      });
-      return data;
+    const key = 'earthquake-list';
+    const cache = this.cacheService.get(key);
+    if (cache) {
+      return cache;
     }
+    const news_url = this.news_url;
+    const result = await axios.get(news_url).catch((e) => {
+      throw new BadRequestException('请求异常');
+    });
+    const data: EarthquakeItem[] = [];
+    const $ = cheerio.load(result.data);
+    const trs = $(
+      '#resource table.cls-data-table tbody tr:not(.cls-data-tr-head-list)',
+    );
+    $(trs).each((_, el) => {
+      const tds = $(el).find('.cls-data-td-list');
+      const index = +tds.eq(0).text();
+      const id = index;
+      const time = tds.eq(1).text();
+      const date = new Date(time);
+      const year = date.getFullYear(); // 年
+      const month = date.getMonth() + 1; // 月，注意 +1
+      const day = date.getDate(); // 日
+      const hour = date.getHours(); // 时
+      const minute = date.getMinutes(); // 分
+      const second = date.getSeconds(); // 秒
+      const longitude = +tds.eq(2).text();
+      const latitude = +tds.eq(3).text();
+      const depth = +tds.eq(4).text();
+      const magnitude = +tds.eq(5).text();
+      const location = tds.eq(6).text();
+      const content = `${month}月${day}日${hour}时${minute}分${second}秒${location}发生${magnitude}级地震，震源深度${depth}千米`;
+      data.push({
+        id,
+        content,
+        time: `${month}-${day}`,
+        detailTime: `${year}-${month}-${day} ${hour}:${minute}:${second}`,
+        longitude,
+        latitude,
+        depth,
+        magnitude,
+        location,
+      });
+    });
 
-    const data = await getDataByIsExpire(listCache, getData);
+    this.cacheService.set(key, data, EXPIRE_TIME);
     return data;
   }
 
   async findAllNews() {
-    async function getData() {
-      const baseUrl = 'https://data.earthquake.cn/gxdt/index.html';
-      const result = await axios.get(baseUrl);
-
-      const $ = cheerio.load(result.data);
-      const data: object[] = [];
-      $('.standard_right ul.origin_ul li').each((_, el) => {
-        const a = $(el).find('a');
-        const span = $(el).find('span');
-        const content = a.find('font');
-
-        data.push({
-          id: generateUniqueId(),
-          link: new URL(a.attr('href') ?? '', baseUrl).href,
-          time: span.text(),
-          content: content.text(),
-        });
-      });
-      return data;
+    const key = 'earthquake-news-list';
+    const cache = this.cacheService.get(key);
+    if (cache) {
+      return cache;
     }
+    const baseUrl = 'https://data.earthquake.cn/gxdt/index.html';
+    const data: object[] = [];
+    const result = await axios.get(baseUrl);
+    const $ = cheerio.load(result.data);
+    $('.standard_right ul.origin_ul li').each((_, el) => {
+      const a = $(el).find('a');
+      const span = $(el).find('span');
+      const content = a.find('font');
 
-    const data = await getDataByIsExpire(newsListCache, getData);
+      data.push({
+        id: generateUniqueId(),
+        link: new URL(a.attr('href') ?? '', baseUrl).href,
+        time: span.text(),
+        content: content.text(),
+      });
+    });
+    this.cacheService.set(key, data, EXPIRE_TIME);
     return data;
   }
 
@@ -170,18 +157,5 @@ export class EarthquakeService {
 
   remove(id: number) {
     return `This action removes a #${id} earthquake`;
-  }
-}
-
-async function getDataByIsExpire(data, func, expireTime = 1000 * 60 * 5) {
-  const curTime = +new Date();
-  const time = data.time;
-  if (!data.data || curTime - time > expireTime) {
-    const newData = await func();
-    data.data = newData;
-    data.time = curTime;
-    return newData;
-  } else {
-    return data.data;
   }
 }
